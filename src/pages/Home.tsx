@@ -26,7 +26,7 @@ import { AreaChart, Area, ResponsiveContainer } from "recharts";
 type StatCardProps = {
   label: string;
   value: string;
-  icon: any;
+  icon: React.ElementType;
   trendData: number[];
   trend?: "up" | "down" | "neutral";
   change?: string;
@@ -146,7 +146,7 @@ export default function Home() {
         <Box>
           <Heading size="lg">Welcome to your Sari-Sari POS</Heading>
           <Text color="gray.500" mt={1}>
-            Here's your summary for today
+            Here&apos;s your summary for today
           </Text>
         </Box>
         <Badge colorScheme="green" px={3} py={1} borderRadius="full">

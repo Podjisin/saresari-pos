@@ -8,7 +8,6 @@ import {
   Th,
   Td,
   Button,
-  IconButton,
   useColorModeValue,
   Stack,
   useToast,
@@ -18,12 +17,10 @@ import {
   Text,
   Badge,
   Tag,
-  TagLabel,
   HStack,
   Input,
   InputGroup,
   InputLeftElement,
-  useBreakpointValue,
   Card,
   CardBody,
   CardHeader,
@@ -33,15 +30,7 @@ import {
   Select,
   Flex,
 } from "@chakra-ui/react";
-import {
-  FiPlus,
-  FiEdit2,
-  FiTrash2,
-  FiRefreshCw,
-  FiSearch,
-  FiFilter,
-  FiCalendar,
-} from "react-icons/fi";
+import { FiRefreshCw, FiSearch, FiFilter, FiCalendar } from "react-icons/fi";
 import { useState, useEffect } from "react";
 import {
   useInventoryHistory,
@@ -78,11 +67,6 @@ export default function InventoryHistory() {
   const [dateRange, setDateRange] = useState<{ start?: string; end?: string }>(
     {},
   );
-
-  const isMobile = useBreakpointValue({
-    base: true,
-    md: false,
-  });
 
   // Pagination state
   const [pagination, setPagination] = useState({

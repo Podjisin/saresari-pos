@@ -23,7 +23,6 @@ import {
   Input,
   InputGroup,
   InputLeftElement,
-  useBreakpointValue,
   Card,
   CardBody,
   CardHeader,
@@ -39,7 +38,6 @@ import {
   FiRefreshCw,
   FiSearch,
   FiFilter,
-  FiCalendar,
 } from "react-icons/fi";
 import { useState, useEffect } from "react";
 import { useInventory } from "../../hooks/inventory/useInventory";
@@ -89,11 +87,6 @@ export default function InventoryList() {
   const [categoryFilter, setCategoryFilter] = useState<string>("all");
   const [expiryFilter, setExpiryFilter] = useState<string>("all");
 
-  const isMobile = useBreakpointValue({
-    base: true,
-    md: false,
-  });
-
   // Pagination state
   const [pagination, setPagination] = useState({
     currentPage: 1,
@@ -129,7 +122,7 @@ export default function InventoryList() {
         WHERE (p.name LIKE ? OR p.barcode LIKE ? OR ib.batch_number LIKE ?)
       `;
 
-      const params: any[] = [
+      const params: unknown[] = [
         `%${debouncedSearchTerm}%`,
         `%${debouncedSearchTerm}%`,
         `%${debouncedSearchTerm}%`,
@@ -182,7 +175,7 @@ export default function InventoryList() {
         WHERE (p.name LIKE ? OR p.barcode LIKE ? OR ib.batch_number LIKE ?)
       `;
 
-      const params: any[] = [
+      const params: unknown[] = [
         `%${debouncedSearchTerm}%`,
         `%${debouncedSearchTerm}%`,
         `%${debouncedSearchTerm}%`,

@@ -1,6 +1,11 @@
 import { useState, useRef, useEffect } from "react";
 import { BrowserMultiFormatReader, IScannerControls } from "@zxing/browser";
-import { DecodeHintType, BarcodeFormat, Result } from "@zxing/library";
+import {
+  DecodeHintType,
+  BarcodeFormat,
+  Result,
+  Exception,
+} from "@zxing/library";
 import {
   Modal,
   ModalOverlay,
@@ -39,7 +44,6 @@ export function BarcodeScannerModal({
   onScanComplete,
 }: BarcodeScannerModalProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const lastToastRef = useRef(0);
   const [devices, setDevices] = useState<MediaDeviceInfo[]>([]);
   const [deviceId, setDeviceId] = useState<string>();
   const [scanning, setScanning] = useState(false);
@@ -52,7 +56,7 @@ export function BarcodeScannerModal({
 
   const codeReader = useRef(
     new BrowserMultiFormatReader(
-      new Map<DecodeHintType, any>([
+      new Map<DecodeHintType, unknown>([
         [
           DecodeHintType.POSSIBLE_FORMATS,
           [
@@ -73,21 +77,6 @@ export function BarcodeScannerModal({
 
   const controlsRef = useRef<IScannerControls | null>(null);
 
-  const showError = (msg: string) => {
-    const now = Date.now();
-    if (now - lastToastRef.current < 3000) return;
-    lastToastRef.current = now;
-
-    setError(msg);
-    toast({
-      title: "Scanner error",
-      description: msg,
-      status: "error",
-      duration: 5000, // Show for 5 seconds
-      isClosable: true,
-    });
-  };
-
   const listDevices = async () => {
     try {
       await navigator.mediaDevices.getUserMedia({ video: true });
@@ -96,8 +85,9 @@ export function BarcodeScannerModal({
       if (!deviceId && cams.length) {
         setDeviceId(cams[0].deviceId);
       }
-    } catch (e: any) {
-      setError(e.message);
+    } catch (e) {
+      const error = e as Error;
+      setError(error.message);
     }
   };
 
@@ -109,7 +99,7 @@ export function BarcodeScannerModal({
       const controls = await codeReader.current.decodeFromVideoDevice(
         deviceId,
         videoRef.current,
-        (result: Result | undefined, err: any, ctrls) => {
+        (result: Result | undefined, err: Exception | undefined, ctrls) => {
           if (ctrls) controlsRef.current = ctrls;
           if (result) {
             onScanComplete(result.getText());
@@ -121,10 +111,11 @@ export function BarcodeScannerModal({
         },
       );
       // detect torch support
-      setSupportsTorch(typeof (controls as any).switchTorch === "function");
-    } catch (e: any) {
+      setSupportsTorch(typeof controls.switchTorch === "function");
+    } catch (e: unknown) {
       setScanning(false);
-      setError(e.message);
+      const error = e as Error;
+      setError(error.message);
     }
   };
 
@@ -135,9 +126,14 @@ export function BarcodeScannerModal({
   };
 
   const toggleTorch = () => {
-    if (!controlsRef.current) return;
+    if (
+      !controlsRef.current ||
+      typeof controlsRef.current.switchTorch !== "function"
+    ) {
+      return;
+    }
     try {
-      (controlsRef.current as any).switchTorch(!torchOn);
+      controlsRef.current.switchTorch(!torchOn);
       setTorchOn((prev) => !prev);
     } catch (e) {
       console.error("Torch toggle failed", e);

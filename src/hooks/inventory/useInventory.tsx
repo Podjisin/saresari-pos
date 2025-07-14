@@ -3,8 +3,8 @@ import { useDatabase } from "../useDatabase";
 import { useToast } from "@chakra-ui/react";
 
 // Type definitions
-type QueryOptions<T = any> = {
-  params?: any[];
+type QueryOptions<T = unknown> = {
+  params?: unknown[];
   skip?: boolean;
   initialData?: T[];
 };
@@ -257,7 +257,7 @@ export function useInventory() {
 
         const changes: string[] = [];
         const updateFields: string[] = [];
-        const updateParams: any[] = [];
+        const updateParams: unknown[] = [];
 
         // Check each field for changes
         if (
@@ -492,8 +492,8 @@ export function useInventory() {
     async (
       productId: number,
       field: string,
-      oldValue: any,
-      newValue: any,
+      oldValue: unknown,
+      newValue: unknown,
       note?: string,
     ) => {
       if (!db) throw new Error("Database not initialized");
@@ -639,7 +639,7 @@ export function useInventory() {
    * Generic query function
    */
   const query = useCallback(
-    async <T = any,>(
+    async <T = unknown,>(
       sql: string,
       { params = [], skip = false, initialData = [] }: QueryOptions<T> = {},
     ): Promise<T[]> => {
@@ -674,7 +674,7 @@ export function useInventory() {
    * Generic mutation function
    */
   const mutate = useCallback(
-    async (sql: string, params: any[] = []): Promise<number> => {
+    async (sql: string, params: unknown[] = []): Promise<number> => {
       try {
         if (isInitializing) throw new Error("Database not initialized");
         setIsLoading(true);

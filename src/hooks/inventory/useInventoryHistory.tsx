@@ -90,7 +90,7 @@ export function useInventoryHistory() {
         `;
 
         const conditions: string[] = [];
-        const queryParams: any[] = [];
+        const queryParams: unknown[] = [];
 
         // Add filters
         if (params.batchId !== undefined) {
@@ -203,7 +203,7 @@ export function useInventoryHistory() {
         `;
 
         const conditions: string[] = [];
-        const queryParams: any[] = [];
+        const queryParams: unknown[] = [];
 
         // Add filters
         if (params.batchId !== undefined) {

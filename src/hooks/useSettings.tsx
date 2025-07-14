@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo } from "react";
+import { useState, useCallback } from "react";
 import { useToast } from "@chakra-ui/react";
 import { useDatabase } from "./useDatabase";
 
@@ -14,7 +14,7 @@ interface Setting {
   updated_at: string;
 }
 
-interface QueryOptions<T = any> {
+interface QueryOptions<T = unknown> {
   params?: unknown[];
   skip?: boolean;
   initialData?: T[];
@@ -142,33 +142,6 @@ export function useSettings(): SettingsHook {
     [],
   );
 
-  const ensureDefaultSettings = useCallback(async () => {
-    if (!db) throw new Error("Database not connected");
-
-    try {
-      await db.execute("BEGIN TRANSACTION");
-      for (const setting of defaultSettings) {
-        await db.execute(
-          `INSERT OR IGNORE INTO settings (key, value, value_type, description, updated_at)
-           VALUES (?, ?, ?, ?, datetime('now'))`,
-          [
-            setting.key,
-            typeof setting.value === "object"
-              ? JSON.stringify(setting.value)
-              : String(setting.value),
-            setting.type,
-            setting.description || null,
-          ],
-        );
-      }
-      await db.execute("COMMIT");
-    } catch (error) {
-      await db.execute("ROLLBACK");
-      console.error("Failed to ensure default settings:", error);
-      throw error;
-    }
-  }, [db]);
-
   const getSetting = useCallback(
     async <T extends SettingValue>(
       key: string,
@@ -278,7 +251,15 @@ export function useSettings(): SettingsHook {
           try {
             const viewSize = await getSetting<number>(`page_size_${viewKey}`);
             if (viewSize) return viewSize;
-          } catch {}
+          } catch (e) {
+            const error = e as Error;
+            if (error.message !== `Setting page_size_${viewKey} not found`) {
+              console.error(
+                "Failed to get view page size, using default",
+                error,
+              );
+            }
+          }
         }
         return await getSetting<number>("default_page_size", 20);
       } catch (err) {
@@ -415,13 +396,6 @@ export function useSettings(): SettingsHook {
       {} as Record<string, Setting>,
     );
   }, [query]);
-
-  // Initialize default settings on first connection
-  // useState(() => {
-  //   if (db && !isInitializing) {
-  //     ensureDefaultSettings().catch(console.error);
-  //   }
-  // });
 
   return {
     getSetting,

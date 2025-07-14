@@ -3,7 +3,7 @@ import theme from "./Theme";
 
 import type { PropsWithChildren } from "react";
 
-function Provider({ children }: PropsWithChildren<{}>) {
+function Provider({ children }: PropsWithChildren) {
   return (
     <ChakraProvider theme={theme}>
       <ColorModeScript initialColorMode={theme.config.initialColorMode} />

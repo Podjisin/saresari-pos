@@ -163,7 +163,7 @@ export function InventoryDetailsModal({
     }
   }, [isOpen, batch, query, resetForm, toast]);
 
-  const handleInputChange = (field: keyof typeof formData, value: any) => {
+  const handleInputChange = (field: keyof typeof formData, value: unknown) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 

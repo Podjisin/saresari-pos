@@ -10,9 +10,14 @@ import { navItems, NavItem } from "../nav";
 
 type Props = {
   onClose: () => void;
-  display?: any;
+  display?:
+    | "block"
+    | "flex"
+    | "none"
+    | "inline"
+    | "inline-block"
+    | Record<string, string>;
 };
-
 export default function SidebarContent({ onClose, display }: Props) {
   const bg = useColorModeValue("white", "gray.800");
   const navigate = useNavigate();

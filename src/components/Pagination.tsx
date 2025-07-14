@@ -5,7 +5,6 @@ import {
   Text,
   Select,
   Box,
-  useToast,
   Spinner,
 } from "@chakra-ui/react";
 import {
@@ -43,7 +42,6 @@ export const Pagination = ({
     isInitializing,
     error,
   } = useSettings();
-  const toast = useToast();
   const [internalPageSize, setInternalPageSize] = useState(5); // Default fallback
   const [pageSizeOptions, setPageSizeOptions] = useState([5, 10, 20, 50, 100]);
   const [loading, setLoading] = useState(true);
