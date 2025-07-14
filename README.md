@@ -1,11 +1,20 @@
 # 🧺 Saresari-POS
 
+<div align="center">
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+[![Tauri](https://img.shields.io/badge/-Tauri-FFC131?logo=tauri&logoColor=white)](https://tauri.app/)
+[![React](https://img.shields.io/badge/-React-61DAFB?logo=react&logoColor=white)](https://react.dev/)
+
+[![Open Issues](https://img.shields.io/github/issues-raw/Podjisin/saresari-pos)](https://github.com/Podjisin/saresari-pos/issues)
+[![Open PRs](https://img.shields.io/github/issues-pr/Podjisin/saresari-pos)](https://github.com/Podjisin/saresari-pos/pulls)
+
+</div>
+
 **Saresari-POS** is a desktop Point-of-Sale system designed for small sari-sari store businesses in the Philippines.
 It’s a personal project made for my mother as she starts her own sari-sari store.
 
 Built using [Tauri](https://tauri.app/), [React](https://react.dev/), and [Chakra UI](https://chakra-ui.com/) – Saresari-POS is fast, lightweight, and works offline.
-
----
 
 ## ✨ Features
 
@@ -42,8 +51,6 @@ Built using [Tauri](https://tauri.app/), [React](https://react.dev/), and [Chakr
 - Comes with realistic sample products, batches, and sales
 - Helps test features right away
 
----
-
 ## 📦 Tech Stack
 
 - ⚙️ **Tauri** – Lightweight Rust-powered desktop apps
@@ -51,8 +58,6 @@ Built using [Tauri](https://tauri.app/), [React](https://react.dev/), and [Chakr
 - 💄 **Chakra UI** – Simple and accessible component library
 - 🗃️ **SQLite** – Local database (with `tauri-plugin-sql`)
 - 🦀 **Rust Migrations** – Versioned schema management
-
----
 
 ## 🚀 Getting Started
 
@@ -91,14 +96,10 @@ This app uses versioned migrations written in Rust.
 - `inventory_history`, `product_history`
 - `settings` – stores app configuration
 
----
-
 ## 📝 Project Status
 
 🔧 **Still in development.**
-Currently focused on inventory and basic sales functions. More features like printing receipts, user accounts, and reports will be added soon.
-
----
+Currently focused on inventory and basic sales functions. More features like printing receipts, user accounts, and reports will be added soon. maybe.
 
 ## 💖 Why This Project?
 
@@ -110,13 +111,9 @@ She’s planning to open a sari-sari store, and I wanted to create a tool that i
 - Fast and lightweight on old laptops
 - Not overwhelming for users unfamiliar with technology
 
----
-
 ## 📜 License
 
 This project is licensed under the MIT License.
-
----
 
 ## 📬 Contact
 
