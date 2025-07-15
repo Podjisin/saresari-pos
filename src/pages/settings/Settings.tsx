@@ -24,12 +24,12 @@ import {
   HStack,
 } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
-import { useSettings } from "../../hooks/useSettings";
+import { useSettings } from "../../hooks/settings/useSettings";
 
 export default function Settings() {
   const {
     getSetting,
-    setSetting,
+    // setMultipleSettings,
     resetSetting,
     getPaginationConfig,
     isLoading,
@@ -103,23 +103,22 @@ export default function Settings() {
   const handleSave = async () => {
     setIsSaving(true);
     try {
-      // First validate that default page size is in the options
-      if (paginationEnabled && !pageSizeOptions.includes(defaultPageSize)) {
-        throw new Error(
-          "Default page size must be one of the available options",
-        );
-      }
+      // if (paginationEnabled && !pageSizeOptions.includes(defaultPageSize)) {
+      //   throw new Error(
+      //     "Default page size must be one of the available options",
+      //   );
+      // }
 
-      await Promise.all([
-        setSetting("shop_name", shopName),
-        setSetting("shop_address", shopAddress),
-        setSetting("receipt_footer", receiptFooter),
-        setSetting("theme", theme),
-        setSetting("pagination_enabled", paginationEnabled),
-        setSetting("default_page_size", defaultPageSize),
-        setSetting("page_size_options", pageSizeOptions),
-        setSetting("remember_page_size", rememberPerView),
-      ]);
+      // await setMultipleSettings([
+      //   { key: "shop_name", value: shopName },
+      //   { key: "shop_address", value: shopAddress },
+      //   { key: "receipt_footer", value: receiptFooter },
+      //   { key: "theme", value: theme },
+      //   { key: "pagination_enabled", value: paginationEnabled },
+      //   { key: "default_page_size", value: defaultPageSize },
+      //   { key: "page_size_options", value: pageSizeOptions },
+      //   { key: "remember_page_size", value: rememberPerView },
+      // ]);
 
       toast({
         title: "Settings saved",

@@ -13,7 +13,7 @@ import {
   ArrowLeftIcon,
   ArrowRightIcon,
 } from "@chakra-ui/icons";
-import { useSettings } from "../hooks/useSettings";
+import { useSettings } from "../hooks/settings/useSettings";
 import { useEffect, useState } from "react";
 
 interface PaginationProps {
