@@ -8,10 +8,12 @@ import {
   StatNumber,
   Button,
   Stack,
-  useColorModeValue,
   Icon,
   Flex,
   Badge,
+  Spinner,
+  Center,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import {
   FiShoppingCart,
@@ -21,88 +23,85 @@ import {
   FiTrendingDown,
 } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
-import { AreaChart, Area, ResponsiveContainer } from "recharts";
+import { AreaChart, Area, ResponsiveContainer, LabelList } from "recharts";
+import { useStatistics } from "../hooks/useStatistics";
 
+// Props for individual statistic cards
 type StatCardProps = {
   label: string;
   value: string;
   icon: React.ElementType;
   trendData: number[];
-  trend?: "up" | "down" | "neutral";
+  trend?: "up" | "down" | "flat";
   change?: string;
+  colorScheme?: string;
 };
-
-const data = [
-  { name: "Mon", value: 10 },
-  { name: "Tue", value: 15 },
-  { name: "Wed", value: 20 },
-  { name: "Thu", value: 25 },
-  { name: "Fri", value: 30 },
-  { name: "Sat", value: 35 },
-  { name: "Sun", value: 40 },
-];
 
 function StatCard({
   label,
   value,
   icon,
   trendData,
-  trend = "neutral",
+  trend = "flat",
   change,
+  colorScheme = "gray",
 }: StatCardProps) {
-  const bg = useColorModeValue("white", "gray.700");
-  const border = useColorModeValue("gray.200", "gray.600");
-  const trendColor =
-    trend === "up" ? "green.400" : trend === "down" ? "red.400" : "gray.400";
+  const bgColor = useColorModeValue(`${colorScheme}.100`, `${colorScheme}.700`);
+  const textColor = useColorModeValue(
+    `${colorScheme}.800`,
+    `${colorScheme}.100`,
+  );
+  const iconBg = useColorModeValue(`${colorScheme}.200`, `${colorScheme}.600`);
+  const iconColor = useColorModeValue(
+    `${colorScheme}.600`,
+    `${colorScheme}.200`,
+  );
 
   const chartData = trendData.map((val, i) => ({
-    name: data[i].name,
+    name: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"][i],
     value: val,
   }));
 
   return (
     <Box
       p={4}
-      bg={bg}
-      borderWidth="1px"
-      borderColor={border}
+      bg={bgColor}
       borderRadius="xl"
       shadow="md"
       position="relative"
       overflow="hidden"
     >
-      {/* Background chart */}
       <Box
         position="absolute"
         bottom={0}
         left={0}
         right={0}
         height="40%"
-        opacity={0.3}
+        opacity={0.2}
       >
         <ResponsiveContainer width="100%" height="100%">
           <AreaChart data={chartData}>
             <Area
               type="monotone"
               dataKey="value"
-              stroke={trendColor}
-              fill={trendColor}
+              stroke={iconColor}
+              fill={iconColor}
               strokeWidth={2}
             />
           </AreaChart>
         </ResponsiveContainer>
       </Box>
 
-      <Stat position="relative" zIndex={1}>
+      <Stat position="relative" zIndex={1} color={textColor}>
         <Flex justifyContent="space-between" alignItems="flex-start">
           <Box>
-            <StatLabel color="gray.500" fontWeight="medium" fontSize="sm">
+            <StatLabel fontWeight="medium" fontSize="sm">
               {label}
             </StatLabel>
             <StatNumber fontSize="2xl" fontWeight="bold" mt={1}>
               {value}
             </StatNumber>
-            {change && (
+            {change && trend !== "flat" && (
               <Badge
                 colorScheme={trend === "up" ? "green" : "red"}
                 fontSize="xs"
@@ -120,15 +119,8 @@ function StatCard({
               </Badge>
             )}
           </Box>
-          <Box
-            p={2}
-            bg={useColorModeValue(
-              `${trendColor.replace(".400", ".100")}`,
-              `${trendColor.replace(".400", ".900")}`,
-            )}
-            borderRadius="lg"
-          >
-            <Icon as={icon} boxSize={5} color={trendColor} />
+          <Box p={2} bg={iconBg} borderRadius="lg">
+            <Icon as={icon} boxSize={5} color={iconColor} />
           </Box>
         </Flex>
       </Stat>
@@ -139,6 +131,33 @@ function StatCard({
 export default function Home() {
   const cardBg = useColorModeValue("white", "gray.800");
   const navigate = useNavigate();
+  const { data, isLoading, error } = useStatistics();
+
+  if (isLoading) {
+    return (
+      <Center minH="60vh">
+        <Spinner size="xl" />
+      </Center>
+    );
+  }
+
+  if (error || !data) {
+    return (
+      <Center minH="60vh">
+        <Text color="red.500">Failed to load statistics: {error}</Text>
+      </Center>
+    );
+  }
+
+  const {
+    totalSales,
+    transactionCount,
+    lowStockCount,
+    dailySales,
+    totalSalesChangePercent,
+    transactionCountChangePercent,
+    trendDirection,
+  } = data;
 
   return (
     <Box p={4} maxW="1200px" mx="auto">
@@ -154,68 +173,58 @@ export default function Home() {
         </Badge>
       </Flex>
 
-      {/* Stats Cards */}
       <SimpleGrid columns={{ base: 1, md: 3 }} spacing={6} mb={8}>
         <StatCard
           label="Total Sales"
-          value="$1,230"
+          value={`₱${totalSales.toFixed(2)}`}
           icon={FiShoppingCart}
-          trendData={[200, 400, 600, 800, 1000, 1200, 1230]}
-          trend="up"
-          change="12% from yesterday"
+          trendData={dailySales}
+          trend={trendDirection}
+          change={`${totalSalesChangePercent.toFixed(2)}% from last week`}
+          colorScheme="green"
         />
         <StatCard
           label="Transactions"
-          value="16"
+          value={transactionCount.toString()}
           icon={FiClipboard}
-          trendData={[5, 8, 10, 12, 14, 15, 16]}
-          trend="neutral"
+          trendData={dailySales.map((x) => (x > 0 ? 1 : 0))}
+          trend={
+            transactionCountChangePercent > 0
+              ? "up"
+              : transactionCountChangePercent < 0
+                ? "down"
+                : "flat"
+          }
+          change={`${transactionCountChangePercent.toFixed(2)}% from last week`}
+          colorScheme="blue"
         />
         <StatCard
           label="Low Stock Items"
-          value="3"
+          value={lowStockCount.toString()}
           icon={FiPlusCircle}
-          trendData={[8, 6, 10, 4, 4, 3, 3]}
+          trendData={Array(7).fill(lowStockCount)}
           trend="down"
-          change="5% from yesterday"
+          colorScheme="orange"
         />
       </SimpleGrid>
 
-      {/* Quick Actions */}
       <Stack direction={{ base: "column", md: "row" }} spacing={4} mb={8}>
-        <Button
-          colorScheme="green"
-          leftIcon={<FiPlusCircle />}
-          size="lg"
-          flex={1}
-          shadow="md"
-        >
+        <Button colorScheme="green" leftIcon={<FiPlusCircle />} shadow="md">
           Start New Sale
         </Button>
-        <Button
-          colorScheme="blue"
-          leftIcon={<FiClipboard />}
-          size="lg"
-          flex={1}
-          shadow="md"
-        >
+        <Button colorScheme="blue" leftIcon={<FiClipboard />} shadow="md">
           View Transactions
         </Button>
         <Button
           colorScheme="orange"
-          leftIcon={<FiShoppingCart />}
-          size="lg"
-          flex={1}
+          leftIcon={<FiShoppingCart />} // using this icon for visual balance
           shadow="md"
-          onClick={() => {
-            navigate("/inventory");
-          }}
+          onClick={() => navigate("/inventory")}
         >
           Manage Inventory
         </Button>
       </Stack>
 
-      {/* Additional content can go here */}
       <Box
         bg={cardBg}
         p={6}
@@ -229,7 +238,12 @@ export default function Home() {
         </Heading>
         <Box height="300px">
           <ResponsiveContainer width="100%" height="100%">
-            <AreaChart data={data}>
+            <AreaChart
+              data={dailySales.map((val, i) => ({
+                name: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"][i],
+                value: val,
+              }))}
+            >
               <defs>
                 <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
                   <stop offset="5%" stopColor="#38B2AC" stopOpacity={0.8} />
@@ -242,7 +256,14 @@ export default function Home() {
                 stroke="#38B2AC"
                 fillOpacity={1}
                 fill="url(#colorValue)"
-              />
+              >
+                <LabelList
+                  dataKey="value"
+                  position="top"
+                  fill="#319795"
+                  fontSize={12}
+                />
+              </Area>
             </AreaChart>
           </ResponsiveContainer>
         </Box>
