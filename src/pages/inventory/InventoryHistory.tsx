@@ -59,6 +59,12 @@ export default function InventoryHistory() {
   const [localLoading, setLocalLoading] = useState(false);
   const toast = useToast();
   const tableBg = useColorModeValue("white", "gray.800");
+  const totalAddCardBg = useColorModeValue("blue.50", "blue.900");
+  const totalRemoveCardBg = useColorModeValue("red.50", "red.900");
+  const mostCommonReasonCardBg = useColorModeValue("green.50", "green.900");
+  const totalAddTextColor = useColorModeValue("blue.600", "blue.200");
+  const totalRemoveTextColor = useColorModeValue("red.600", "red.200");
+  const mostCommonReasonTextColor = useColorModeValue("green.600", "green.200");
 
   // Filter states
   const [searchTerm, setSearchTerm] = useState("");
@@ -228,13 +234,10 @@ export default function InventoryHistory() {
         {/* Stats Cards */}
         {stats && (
           <SimpleGrid columns={{ base: 1, md: 3 }} spacing={4}>
-            <Card bg={useColorModeValue("blue.50", "blue.900")}>
+            <Card bg={totalAddCardBg}>
               <CardBody>
                 <Stack spacing={1}>
-                  <Text
-                    fontSize="sm"
-                    color={useColorModeValue("blue.600", "blue.200")}
-                  >
+                  <Text fontSize="sm" color={totalAddTextColor}>
                     Total Added
                   </Text>
                   <Heading size="lg">{stats.total_added}</Heading>
@@ -242,13 +245,10 @@ export default function InventoryHistory() {
               </CardBody>
             </Card>
 
-            <Card bg={useColorModeValue("red.50", "red.900")}>
+            <Card bg={totalRemoveCardBg}>
               <CardBody>
                 <Stack spacing={1}>
-                  <Text
-                    fontSize="sm"
-                    color={useColorModeValue("red.600", "red.200")}
-                  >
+                  <Text fontSize="sm" color={totalRemoveTextColor}>
                     Total Removed
                   </Text>
                   <Heading size="lg">{stats.total_removed}</Heading>
@@ -256,13 +256,10 @@ export default function InventoryHistory() {
               </CardBody>
             </Card>
 
-            <Card bg={useColorModeValue("green.50", "green.900")}>
+            <Card bg={mostCommonReasonCardBg}>
               <CardBody>
                 <Stack spacing={1}>
-                  <Text
-                    fontSize="sm"
-                    color={useColorModeValue("green.600", "green.200")}
-                  >
+                  <Text fontSize="sm" color={mostCommonReasonTextColor}>
                     Most Common Reason
                   </Text>
                   <Heading size="lg" textTransform="capitalize">
