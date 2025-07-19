@@ -9,8 +9,8 @@ import {
   DrawerOverlay,
   useBreakpointValue,
 } from "@chakra-ui/react";
-import { Sidebar } from "./Sidebar/Index";
-import { Header } from "./Header/Index";
+import { Sidebar } from "./Sidebar";
+import { Header } from "./Header";
 
 type Props = { children: ReactNode };
 
