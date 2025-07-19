@@ -24,10 +24,10 @@ import {
 } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import { AreaChart, Area, ResponsiveContainer, LabelList } from "recharts";
-import { useStatistics } from "../hooks/useStatistics";
+import { useStatistics } from "../../hooks/useStatistics";
 
 // Props for individual statistic cards
-type StatCardProps = {
+export type StatCardProps = {
   label: string;
   value: string;
   icon: React.ElementType;
@@ -128,8 +128,17 @@ function StatCard({
   );
 }
 
-export default function Home() {
+/**
+ *
+ * @returns Home page component that displays statistics and actions
+ * This component fetches statistics data and displays it in a grid of cards.
+ * It also provides buttons for common actions like starting a new sale,
+ */
+
+export default function HomePage() {
   const cardBg = useColorModeValue("white", "gray.800");
+  const weekleyOverviewBorderBg = useColorModeValue("gray.200", "gray.600");
+
   const navigate = useNavigate();
   const { data, isLoading, error } = useStatistics();
 
@@ -231,7 +240,7 @@ export default function Home() {
         borderRadius="xl"
         shadow="md"
         borderWidth="1px"
-        borderColor={useColorModeValue("gray.200", "gray.600")}
+        borderColor={weekleyOverviewBorderBg}
       >
         <Heading size="md" mb={4}>
           Weekly Sales Overview

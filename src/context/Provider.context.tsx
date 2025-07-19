@@ -1,5 +1,5 @@
 import { ChakraProvider, ColorModeScript } from "@chakra-ui/react";
-import theme from "./Theme";
+import { theme } from "./Theme.context";
 
 import type { PropsWithChildren } from "react";
 

@@ -5,7 +5,6 @@ import {
   Text,
   Select,
   Box,
-  Spinner,
 } from "@chakra-ui/react";
 import {
   ChevronLeftIcon,
@@ -13,17 +12,15 @@ import {
   ArrowLeftIcon,
   ArrowRightIcon,
 } from "@chakra-ui/icons";
-import { useSettings } from "../hooks/settings/useSettings";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
-interface PaginationProps {
+export interface PaginationProps {
   currentPage: number;
   totalPages: number;
   onPageChange: (page: number) => void;
   pageSize?: number;
   onPageSizeChange?: (size: number) => void;
   siblingCount?: number;
-  viewKey?: string; // Optional view key for view-specific page sizes
 }
 
 export const Pagination = ({
@@ -33,61 +30,16 @@ export const Pagination = ({
   pageSize: propPageSize,
   onPageSizeChange,
   siblingCount = 1,
-  viewKey,
 }: PaginationProps) => {
-  const {
-    getPageSize,
-    setPageSize,
-    getPaginationConfig,
-    isInitializing,
-    error,
-  } = useSettings();
   const [internalPageSize, setInternalPageSize] = useState(5); // Default fallback
-  const [pageSizeOptions, setPageSizeOptions] = useState([5, 10, 20, 50, 100]);
-  const [loading, setLoading] = useState(true);
-
-  // Initialize pagination settings
-  useEffect(() => {
-    const initializePagination = async () => {
-      try {
-        setLoading(true);
-        if (isInitializing) return;
-
-        const config = await getPaginationConfig();
-        setPageSizeOptions(config.options);
-
-        const size = await getPageSize(viewKey);
-        setInternalPageSize(size);
-      } catch (error) {
-        console.error("Pagination initialization error:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    initializePagination();
-  }, [getPageSize, getPaginationConfig, viewKey, isInitializing]);
+  const [pageSizeOptions] = useState([5, 10, 20, 50, 100]);
 
   const activePageSize = propPageSize ?? internalPageSize;
 
-  const handlePageSizeChange = async (size: number) => {
-    try {
-      setLoading(true);
-
-      // Update in settings if we're controlling page size internally
-      if (propPageSize === undefined) {
-        await setPageSize(size, viewKey);
-        setInternalPageSize(size);
-      }
-
-      // Notify parent component if callback provided
-      if (onPageSizeChange) {
-        onPageSizeChange(size);
-      }
-    } catch (error) {
-      console.error("Page size update error:", error);
-    } finally {
-      setLoading(false);
+  const handlePageSizeChange = (size: number) => {
+    setInternalPageSize(size);
+    if (onPageSizeChange) {
+      onPageSizeChange(size);
     }
   };
 
@@ -138,24 +90,6 @@ export const Pagination = ({
   const handlePrevious = () => currentPage > 1 && onPageChange(currentPage - 1);
   const handleNext = () =>
     currentPage < totalPages && onPageChange(currentPage + 1);
-
-  if (loading) {
-    return (
-      <Box display="flex" justifyContent="center" p={4}>
-        <Spinner size="md" />
-      </Box>
-    );
-  }
-
-  if (error) {
-    return (
-      <Box display="flex" justifyContent="center" p={4}>
-        <Text color="red.500" fontSize="sm">
-          Failed to load pagination settings
-        </Text>
-      </Box>
-    );
-  }
 
   return (
     <Box
@@ -234,7 +168,6 @@ export const Pagination = ({
             value={activePageSize}
             onChange={(e) => handlePageSizeChange(Number(e.target.value))}
             variant="outline"
-            isDisabled={loading}
           >
             {pageSizeOptions.map((size) => (
               <option key={size} value={size}>

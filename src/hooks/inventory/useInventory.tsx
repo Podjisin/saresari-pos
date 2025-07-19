@@ -3,13 +3,13 @@ import { useDatabase } from "../useDatabase";
 import { useToast } from "@chakra-ui/react";
 
 // Type definitions
-type QueryOptions<T = unknown> = {
+export type QueryOptions<T = unknown> = {
   params?: unknown[];
   skip?: boolean;
   initialData?: T[];
 };
 
-type InventoryChangeReason =
+export type InventoryChangeReason =
   | "initial_stock"
   | "restock"
   | "sale"
@@ -23,7 +23,7 @@ type InventoryChangeReason =
   | "split"
   | "other";
 
-interface InventoryBatch {
+export interface InventoryBatch {
   product_id: number;
   quantity: number;
   cost_price: number;
@@ -31,19 +31,19 @@ interface InventoryBatch {
   batch_number?: string | null;
 }
 
-interface BatchUpdate {
+export interface BatchUpdate {
   cost_price?: number;
   expiration_date?: string | null;
   batch_number?: string | null;
 }
 
-interface SaleItem {
+export interface SaleItem {
   batchId: number;
   quantity: number;
   priceAtSale: number;
 }
 
-interface ProductUpsert {
+export interface ProductUpsert {
   name: string;
   barcode: string | null;
   selling_price: number;

@@ -40,28 +40,14 @@ import {
   FiFilter,
 } from "react-icons/fi";
 import { useState, useEffect } from "react";
-import { useInventory } from "../../hooks/inventory/useInventory";
-import { AddInventoryItemModal } from "./AddInventoryItemModal";
-import { InventoryDetailsModal } from "./InventoryDetailsModal";
-import { BarcodeScannerModal } from "./BarcodeScannerModal";
-import { Pagination } from "../../components/Pagination";
-import { useDebounce } from "../../hooks/useDebounce";
+import { useInventory } from "../../../hooks/inventory/useInventory";
+import { AddInventoryItemModal } from "../modals/Additem";
+import { InventoryDetailsModal } from "../modals/ItemDetails";
+import { BarcodeScanner } from "../modals/BarcodeScanner";
+import { Pagination } from "../../../components/Pagination";
+import { useDebounce } from "../../../hooks/useDebounce";
 import { format } from "date-fns";
-
-interface InventoryBatch {
-  id: number;
-  product_id: number;
-  product_name: string;
-  barcode: string | null;
-  batch_number: string | null;
-  quantity: number;
-  cost_price: number;
-  selling_price: number;
-  expiration_date: string | null;
-  date_added: string;
-  unit_name: string | null;
-  category_name: string | null;
-}
+import { InventoryBatch } from "@/types/index";
 
 export default function InventoryList() {
   const [batches, setBatches] = useState<InventoryBatch[]>([]);
@@ -660,7 +646,7 @@ export default function InventoryList() {
       </Stack>
 
       {/* Modals */}
-      <BarcodeScannerModal
+      <BarcodeScanner
         isOpen={isScannerOpen}
         onClose={() => setIsScannerOpen(false)}
         onScanComplete={handleScanComplete}

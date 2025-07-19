@@ -9,8 +9,8 @@ import {
   DrawerOverlay,
   useBreakpointValue,
 } from "@chakra-ui/react";
-import SidebarContent from "./SidebarContent";
-import Header from "./Header";
+import { Sidebar } from "./Sidebar/Index";
+import { Header } from "./Header/Index";
 
 type Props = { children: ReactNode };
 
@@ -43,14 +43,14 @@ export default function DefaultLayout({ children }: Props) {
         bg={bg}
         borderRightWidth="1px"
       >
-        <SidebarContent onClose={onClose} />
+        <Sidebar onClose={onClose} />
       </Box>
 
       {/* Mobile drawer */}
       <Drawer isOpen={isOpen} placement="left" onClose={onClose}>
         <DrawerOverlay />
         <DrawerContent mt="var(--header-height)" border="none">
-          <SidebarContent onClose={onClose} />
+          <Sidebar onClose={onClose} />
         </DrawerContent>
       </Drawer>
 

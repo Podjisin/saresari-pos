@@ -6,9 +6,9 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
-import { navItems, NavItem } from "../nav";
+import { navItems, NavItem } from "../../nav";
 
-type Props = {
+export type SidebarProps = {
   onClose: () => void;
   display?:
     | "block"
@@ -18,7 +18,7 @@ type Props = {
     | "inline-block"
     | Record<string, string>;
 };
-export default function SidebarContent({ onClose, display }: Props) {
+export const SidebarComponent = ({ onClose, display }: SidebarProps) => {
   const bg = useColorModeValue("white", "gray.800");
   const navigate = useNavigate();
 
@@ -53,4 +53,4 @@ export default function SidebarContent({ onClose, display }: Props) {
       </VStack>
     </Box>
   );
-}
+};
