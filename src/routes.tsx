@@ -1,22 +1,16 @@
 import { lazy } from "react";
 import { RouteObject } from "react-router-dom";
 
-const Home = lazy(() => import("./pages/Home"));
-
-const Inventory = lazy(() => import("./pages/inventory/Inventory"));
-const Settings = lazy(() => import("./pages/settings/Settings"));
+const HomePage = lazy(() => import("@/pages/home"));
+const InventoryPage = lazy(() => import("@/pages/inventory"));
 
 export const routes: RouteObject[] = [
   {
     path: "/",
-    element: <Home />,
+    element: <HomePage />,
   },
   {
     path: "/inventory",
-    element: <Inventory />,
-  },
-  {
-    path: "/settings",
-    element: <Settings />,
+    element: <InventoryPage />,
   },
 ];

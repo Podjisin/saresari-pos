@@ -10,9 +10,9 @@ import {
 } from "@chakra-ui/react";
 import { HamburgerIcon, MoonIcon, SunIcon } from "@chakra-ui/icons";
 
-type Props = { onOpen: () => void };
+export type HeaderProps = { onOpen: () => void };
 
-export default function Header({ onOpen }: Props) {
+export const HeaderComponent = ({ onOpen }: HeaderProps) => {
   const bg = useColorModeValue("white", "gray.800");
   const [currentTime, setCurrentTime] = useState(new Date());
   const { colorMode, toggleColorMode } = useColorMode();
@@ -72,4 +72,4 @@ export default function Header({ onOpen }: Props) {
       />
     </Flex>
   );
-}
+};

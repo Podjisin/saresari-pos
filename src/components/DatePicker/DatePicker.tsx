@@ -4,7 +4,7 @@ import { Input } from "@chakra-ui/react";
 import ReactDatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-interface DatePickerProps {
+export interface DatePickerProps {
   selectedDate: string | null;
   onChange: (date: string | null) => void;
   placeholderText?: string;
