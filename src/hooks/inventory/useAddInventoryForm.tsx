@@ -13,7 +13,7 @@ export interface ProductInfo {
   category_name: string | null;
 }
 
-interface FormState {
+export interface FormState {
   barcode?: string;
   name: string;
   quantity: number;
@@ -29,7 +29,7 @@ interface FormState {
   showExistingAlert: boolean;
 }
 
-interface Handlers {
+export interface Handlers {
   setBarcode: (v: string) => void;
   setName: (v: string) => void;
   setQuantity: (v: number) => void;
@@ -151,7 +151,7 @@ export function useAddInventoryForm({
         });
       }
     })();
-  }, [barcode]);
+  }, [barcode, query, toast]);
 
   const submit = async () => {
     try {
@@ -168,8 +168,8 @@ export function useAddInventoryForm({
 
       if (!name) throw new Error("Item name is required");
       if (quantity <= 0) throw new Error("Quantity must be positive");
-      if (costPrice <= 0) throw new Error("Cost price must be positive");
-      if (sellingPrice <= 0) throw new Error("Selling price must be positive");
+      if (costPrice < 0) throw new Error("Cost price cannot be negative");
+      if (sellingPrice < 0) throw new Error("Selling price cannot be negative");
 
       const productResult = await upsertProduct({
         name,

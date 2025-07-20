@@ -1,4 +1,3 @@
-// BarcodeScannerModal/index.tsx
 import {
   Modal,
   ModalOverlay,
@@ -37,12 +36,9 @@ export function BarcodeScanner({
     deviceId,
     setDeviceId,
     scanning,
-    supportsTorch,
-    torchOn,
     error,
     manual,
     submitManual,
-    toggleTorch,
     reset,
   } = useBarcodeScanner(onScanComplete, toast);
 
@@ -62,7 +58,10 @@ export function BarcodeScanner({
         <ModalBody>
           <Tabs
             index={manual.mode === "scan" ? 0 : 1}
-            onChange={(i) => manual.setMode(i === 0 ? "scan" : "manual")}
+            onChange={(i) => {
+              const newMode = i === 0 ? "scan" : "manual";
+              if (manual.mode !== newMode) manual.setMode(newMode);
+            }}
           >
             <TabList>
               <Tab>Scan</Tab>
@@ -76,9 +75,6 @@ export function BarcodeScanner({
                   deviceId={deviceId}
                   setDeviceId={setDeviceId}
                   scanning={scanning}
-                  supportsTorch={supportsTorch}
-                  torchOn={torchOn}
-                  toggleTorch={toggleTorch}
                   error={error}
                 />
               </TabPanel>

@@ -10,10 +10,7 @@ import {
   HStack,
 } from "@chakra-ui/react";
 import { FiEdit, FiTrash2, FiSave } from "react-icons/fi";
-import {
-  FormData,
-  useInventoryDetailsForm,
-} from "@/hooks/inventory/useInventoryDetailForm";
+import { useInventoryDetailsForm } from "@/hooks/inventory/useInventoryDetailForm";
 import { InventoryHeader } from "./InventoryHeader";
 import { InventoryDisplay } from "./InventoryDisplay";
 import { InventoryEditForm } from "./InventoryEditForm";
@@ -70,7 +67,7 @@ export function InventoryDetailsModal({
                 formData={formData}
                 units={units}
                 categories={categories}
-                onChange={(set: Partial<FormData>) => formData.set(set)}
+                onChange={formData.set}
               />
             )}
           </ModalBody>

@@ -44,12 +44,17 @@ import { useInventory } from "../../../hooks/inventory/useInventory";
 import { AddInventoryItemModal } from "../modals/Additem";
 import { InventoryDetailsModal } from "../modals/ItemDetails";
 import { BarcodeScanner } from "../modals/BarcodeScanner";
-import { Pagination } from "../../../components/Pagination";
-import { useDebounce } from "../../../hooks/useDebounce";
+import { Pagination } from "@/components/Pagination";
+import { useDebounce } from "@/hooks/useDebounce";
 import { format } from "date-fns";
 import { InventoryBatch } from "@/types/index";
+import type { Handlers } from "@/hooks/inventory/useAddInventoryForm";
 
-export default function InventoryList() {
+interface InventoryListProps {
+  handlers: Handlers;
+}
+
+export default function InventoryList({ handlers }: InventoryListProps) {
   const [batches, setBatches] = useState<InventoryBatch[]>([]);
   const { query, isLoading, error, isInitializing, resetError } =
     useInventory();
@@ -225,6 +230,7 @@ export default function InventoryList() {
     setScannedBarcode(barcode);
     setIsScannerOpen(false);
     setIsAddModalOpen(true);
+    handlers.setBarcode(barcode);
   };
 
   const handleItemAdded = () => {

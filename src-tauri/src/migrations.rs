@@ -65,6 +65,8 @@ pub fn get_migrations() -> Vec<Migration> {
                     quantity INTEGER NOT NULL DEFAULT 0,
                     expiration_date TEXT,
                     date_added TEXT DEFAULT CURRENT_TIMESTAMP,
+                    is_deleted INTEGER DEFAULT 0,
+                    deleted_at TEXT,
                     FOREIGN KEY (product_id) REFERENCES products(id)
                 );
                 CREATE INDEX IF NOT EXISTS idx_inventory_batches_expiration 

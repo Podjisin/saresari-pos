@@ -10,11 +10,14 @@ import {
   Box,
 } from "@chakra-ui/react";
 import { DatePicker } from "@/components/DatePicker";
-import { useAddInventoryForm } from "@/hooks/inventory/useAddIventoryForm";
+import type {
+  FormState,
+  Handlers,
+} from "@/hooks/inventory/useAddInventoryForm";
 
 interface AddInventoryFormProps {
-  state: ReturnType<typeof useAddInventoryForm>["formState"];
-  handlers: ReturnType<typeof useAddInventoryForm>["handlers"];
+  state: FormState;
+  handlers: Handlers;
 }
 
 export function AddInventoryForm({ state, handlers }: AddInventoryFormProps) {
@@ -32,6 +35,7 @@ export function AddInventoryForm({ state, handlers }: AddInventoryFormProps) {
           value={state.barcode || ""}
           onChange={(e) => handlers.setBarcode(e.target.value)}
           placeholder="Enter product barcode"
+          isDisabled={!!state.existingProduct}
         />
       </FormControl>
 

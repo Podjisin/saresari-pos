@@ -80,6 +80,8 @@ export function InventoryDisplay({ batch, error }: InventoryDisplayProps) {
           <Text fontSize="sm" color="gray.500">
             Selling Price
           </Text>
+          {/* TODO: Extract currency symbol to a configuration constant 
+          for better maintainability and potential internationalization support. */}
           <Text fontSize="md" fontWeight="bold" color="green.500">
             ₱{batch.selling_price.toFixed(2)}
           </Text>

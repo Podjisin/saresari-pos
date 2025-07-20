@@ -1,7 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { useDatabase } from "../useDatabase";
 import { useToast } from "@chakra-ui/react";
-
 // Type definitions
 export type QueryOptions<T = unknown> = {
   params?: unknown[];
@@ -23,7 +22,7 @@ export type InventoryChangeReason =
   | "split"
   | "other";
 
-export interface InventoryBatch {
+export interface InventoryBatchInput {
   product_id: number;
   quantity: number;
   cost_price: number;
@@ -94,7 +93,7 @@ export function useInventory() {
    * Adds a new inventory batch and records the initial stock
    */
   const addInventoryBatch = useCallback(
-    async (batch: InventoryBatch) => {
+    async (batch: InventoryBatchInput) => {
       try {
         setIsLoading(true);
         setError(null);
@@ -215,9 +214,10 @@ export function useInventory() {
         );
 
         // Delete the batch
-        await db.execute("DELETE FROM inventory_batches WHERE id = ?", [
-          batchId,
-        ]);
+        await db.execute(
+          "UPDATE inventory_batches SET is_deleted = 1, deleted_at = datetime('now') WHERE id = ?",
+          [batchId],
+        );
 
         return true;
       } catch (err) {

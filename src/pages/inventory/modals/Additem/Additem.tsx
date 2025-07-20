@@ -9,7 +9,7 @@ import {
   Button,
   useToast,
 } from "@chakra-ui/react";
-import { useAddInventoryForm } from "@/hooks/inventory/useAddIventoryForm";
+import { useAddInventoryForm } from "@/hooks/inventory/useAddInventoryForm";
 import { AddInventoryForm } from "./AddInventoryForm";
 import { ExistingProductAlert } from "./ExistingProductAlert";
 
@@ -52,7 +52,11 @@ export function AddInventoryItemModal({
           {formState.showExistingAlert && formState.existingProduct && (
             <ExistingProductAlert product={formState.existingProduct} />
           )}
-          <AddInventoryForm state={formState} handlers={handlers} />
+          <AddInventoryForm
+            key={barcode}
+            state={formState}
+            handlers={handlers}
+          />
         </ModalBody>
         <ModalFooter>
           <Button variant="ghost" mr={3} onClick={onClose}>

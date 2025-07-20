@@ -30,7 +30,7 @@ export function ManualPane({
         />
         <InputRightElement>
           <IconButton
-            aria-label="Switch"
+            aria-label="Submit Barcode"
             icon={<FiMaximize2 />}
             size="sm"
             variant="ghost"

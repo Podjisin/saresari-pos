@@ -26,8 +26,6 @@ export function InventoryEditForm({
   categories,
   onChange,
 }: InventoryEditFormProps) {
-  const fd = formData;
-
   return (
     <Stack spacing={4} mb={4}>
       <Stack direction="row" spacing={4}>
@@ -35,7 +33,7 @@ export function InventoryEditForm({
           <FormLabel>Quantity</FormLabel>
           <NumberInput
             min={0}
-            value={fd.quantity}
+            value={formData.quantity}
             onChange={(_, val) => onChange({ quantity: val })}
           >
             <NumberInputField />
@@ -48,7 +46,7 @@ export function InventoryEditForm({
             min={0.01}
             step={0.01}
             precision={2}
-            value={fd.costPrice}
+            value={formData.costPrice}
             onChange={(_, val) => onChange({ costPrice: val })}
           >
             <NumberInputField />
@@ -61,7 +59,7 @@ export function InventoryEditForm({
             min={0.01}
             step={0.01}
             precision={2}
-            value={fd.sellingPrice}
+            value={formData.sellingPrice}
             onChange={(_, val) => onChange({ sellingPrice: val })}
           >
             <NumberInputField />
@@ -74,7 +72,7 @@ export function InventoryEditForm({
           <FormLabel>Unit</FormLabel>
           <Select
             placeholder="Select unit"
-            value={fd.unitId ?? ""}
+            value={formData.unitId ?? ""}
             onChange={(e) =>
               onChange({
                 unitId: e.target.value ? parseInt(e.target.value, 10) : null,
@@ -93,7 +91,7 @@ export function InventoryEditForm({
           <FormLabel>Category</FormLabel>
           <Select
             placeholder="Select category"
-            value={fd.categoryId ?? ""}
+            value={formData.categoryId ?? ""}
             onChange={(e) =>
               onChange({
                 categoryId: e.target.value
@@ -115,7 +113,7 @@ export function InventoryEditForm({
         <FormControl>
           <FormLabel>Batch Number</FormLabel>
           <Input
-            value={fd.batchNumber}
+            value={formData.batchNumber}
             onChange={(e) => onChange({ batchNumber: e.target.value })}
             placeholder="Optional"
           />
@@ -125,7 +123,7 @@ export function InventoryEditForm({
           <FormLabel>Expiration Date</FormLabel>
           <Input
             type="date"
-            value={fd.expirationDate ?? ""}
+            value={formData.expirationDate ?? ""}
             onChange={(e) =>
               onChange({
                 expirationDate: e.target.value || null,

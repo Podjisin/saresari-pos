@@ -128,16 +128,9 @@ function StatCard({
   );
 }
 
-/**
- *
- * @returns Home page component that displays statistics and actions
- * This component fetches statistics data and displays it in a grid of cards.
- * It also provides buttons for common actions like starting a new sale,
- */
-
 export default function HomePage() {
   const cardBg = useColorModeValue("white", "gray.800");
-  const weekleyOverviewBorderBg = useColorModeValue("gray.200", "gray.600");
+  const weeklyOverviewBorderBg = useColorModeValue("gray.200", "gray.600");
 
   const navigate = useNavigate();
   const { data, isLoading, error } = useStatistics();
@@ -240,7 +233,7 @@ export default function HomePage() {
         borderRadius="xl"
         shadow="md"
         borderWidth="1px"
-        borderColor={weekleyOverviewBorderBg}
+        borderColor={weeklyOverviewBorderBg}
       >
         <Heading size="md" mb={4}>
           Weekly Sales Overview

@@ -3,6 +3,7 @@ import React from "react";
 import { Input } from "@chakra-ui/react";
 import ReactDatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { format } from "date-fns";
 
 export interface DatePickerProps {
   selectedDate: string | null;
@@ -18,9 +19,7 @@ export const DatePicker = ({
   return (
     <ReactDatePicker
       selected={selectedDate ? new Date(selectedDate) : null}
-      onChange={(date) =>
-        onChange(date ? date.toISOString().split("T")[0] : null)
-      }
+      onChange={(date) => onChange(date ? format(date, "yyyy-MM-dd") : null)}
       dateFormat="yyyy-MM-dd"
       placeholderText={placeholderText}
       customInput={<Input />}

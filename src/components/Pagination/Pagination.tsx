@@ -37,7 +37,10 @@ export const Pagination = ({
   const activePageSize = propPageSize ?? internalPageSize;
 
   const handlePageSizeChange = (size: number) => {
-    setInternalPageSize(size);
+    if (!propPageSize) {
+      setInternalPageSize(size);
+    }
+
     if (onPageSizeChange) {
       onPageSizeChange(size);
     }

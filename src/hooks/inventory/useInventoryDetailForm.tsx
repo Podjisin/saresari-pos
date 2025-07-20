@@ -1,7 +1,8 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useRef, useCallback } from "react";
 import { useToast } from "@chakra-ui/react";
 import { useInventory } from "./useInventory";
-import { InventoryBatch } from "@/types/index";
+import type { InventoryBatch } from "@/types/index";
+
 export interface Unit {
   id: number;
   name: string;
@@ -70,9 +71,7 @@ export function useInventoryDetailsForm({
 
   const [units, setUnits] = useState<Unit[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
-  const [formData, setFormData] = useState<
-    FormData & { set: (update: Partial<FormData>) => void }
-  >({
+  const [formDataState, setFormDataState] = useState<FormData>({
     quantity: 0,
     costPrice: 0,
     sellingPrice: 0,
@@ -80,17 +79,16 @@ export function useInventoryDetailsForm({
     expirationDate: null,
     unitId: null,
     categoryId: null,
-    set: () => {},
   });
 
-  // Set up `set` method for updating state easily
-  useEffect(() => {
-    setFormData((fd) => ({
-      ...fd,
-      set: (upd: Partial<FormData>) =>
-        setFormData((prev) => ({ ...prev, ...upd })),
-    }));
+  const updateFormData = useCallback((update: Partial<FormData>) => {
+    setFormDataState((prev) => ({ ...prev, ...update }));
   }, []);
+
+  const formData = {
+    ...formDataState,
+    set: updateFormData,
+  };
 
   // Load initial data (unit, category, populate form) when editing starts
   const loadData = useCallback(async () => {
@@ -113,7 +111,7 @@ export function useInventoryDetailsForm({
       const unitId = productInfo[0]?.unit_id ?? null;
       const categoryId = productInfo[0]?.category_id ?? null;
 
-      setFormData({
+      setFormDataState({
         quantity: batch.quantity,
         costPrice: batch.cost_price,
         sellingPrice: batch.selling_price,
@@ -121,7 +119,6 @@ export function useInventoryDetailsForm({
         expirationDate: batch.expiration_date,
         unitId,
         categoryId,
-        set: formData.set, // preserve set method
       });
     } catch (err) {
       console.error("Failed to load form data:", err);

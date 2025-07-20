@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { BrowserMultiFormatReader, IScannerControls } from "@zxing/browser";
 import {
   DecodeHintType,
@@ -6,7 +6,8 @@ import {
   Result,
   Exception,
 } from "@zxing/library";
-import { useToast, UseToastOptions, ToastId } from "@chakra-ui/react";
+import { useToast } from "@chakra-ui/react";
+import { delay } from "@/utils/delay";
 
 type ManualState = {
   mode: "scan" | "manual";
@@ -17,7 +18,7 @@ type ManualState = {
 
 export function useBarcodeScanner(
   onScanComplete: (barcode: string) => void,
-  toast: (options: UseToastOptions) => ToastId | undefined = useToast(),
+  toast: ReturnType<typeof useToast>,
 ) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const codeReader = useRef(
@@ -45,34 +46,52 @@ export function useBarcodeScanner(
   const [devices, setDevices] = useState<MediaDeviceInfo[]>([]);
   const [deviceId, setDeviceId] = useState<string>("");
   const [scanning, setScanning] = useState(false);
-  const [supportsTorch, setSupportsTorch] = useState(false);
-  const [torchOn, setTorchOn] = useState(false);
+
   const [error, setError] = useState<string | null>(null);
 
-  const [manual, setManualState] = useState<ManualState>({
-    mode: "scan",
-    value: "",
-    setMode: (m) => setManualState((ms) => ({ ...ms, mode: m })),
-    setValue: (v) => setManualState((ms) => ({ ...ms, value: v })),
-  });
+  const [manualMode, setManualMode] = useState<"scan" | "manual">("scan");
+  const [manualValue, setManualValue] = useState("");
+
+  const manual: ManualState = {
+    mode: manualMode,
+    value: manualValue,
+    setMode: setManualMode,
+    setValue: setManualValue,
+  };
 
   const listDevices = async () => {
     try {
       await navigator.mediaDevices.getUserMedia({ video: true });
       const cams = await BrowserMultiFormatReader.listVideoInputDevices();
       setDevices(cams);
-      if (!deviceId && cams.length) setDeviceId(cams[0].deviceId);
+      if (cams.length && !cams.find((c) => c.deviceId === deviceId)) {
+        setDeviceId(cams[0].deviceId);
+      }
     } catch (e) {
       setError((e as Error).message);
     }
   };
 
-  const startScan = async () => {
-    if (!deviceId || !videoRef.current) return;
+  const stopScan = useCallback(() => {
+    const controls = controlsRef.current;
+    if (!controls) return;
+
+    if (controlsRef.current) {
+      controlsRef.current.stop();
+    }
+    setScanning(false);
+  }, []);
+
+  const startScan = useCallback(async () => {
+    if (!deviceId || !videoRef.current || scanning) return;
+
+    await delay({ ms: 5000 }); // Ensure video is ready
+    stopScan();
+
     setError(null);
     setScanning(true);
     try {
-      const controls = await codeReader.current.decodeFromVideoDevice(
+      await codeReader.current.decodeFromVideoDevice(
         deviceId,
         videoRef.current,
         (result: Result | undefined, err: Exception | undefined, ctrls) => {
@@ -85,24 +104,11 @@ export function useBarcodeScanner(
           }
         },
       );
-      setSupportsTorch(typeof controls.switchTorch === "function");
     } catch (e) {
       setScanning(false);
       setError((e as Error).message);
     }
-  };
-
-  const stopScan = () => {
-    controlsRef.current?.stop();
-    setScanning(false);
-    setTorchOn(false);
-  };
-
-  const toggleTorch = () => {
-    if (!controlsRef.current?.switchTorch) return;
-    controlsRef.current.switchTorch(!torchOn);
-    setTorchOn((prev) => !prev);
-  };
+  }, [deviceId, scanning, onScanComplete, stopScan]);
 
   const submitManual = () => {
     const text = manual.value.trim();
@@ -116,19 +122,21 @@ export function useBarcodeScanner(
       });
   };
 
-  const reset = () => {
+  const reset = useCallback(() => {
     stopScan();
     setError(null);
-    setManualState((ms) => ({ ...ms, mode: "scan", value: "" }));
-  };
+    setManualMode("scan");
+    setManualValue("");
+  }, [stopScan]);
 
   useEffect(() => {
     listDevices();
   }, []);
+
   useEffect(() => {
-    if (manual.mode === "scan") startScan();
+    if (!scanning && manual.mode === "scan") startScan();
     return stopScan;
-  }, [deviceId, manual.mode]);
+  }, [deviceId, manual.mode, startScan, stopScan]);
 
   return {
     videoRef,
@@ -136,9 +144,6 @@ export function useBarcodeScanner(
     deviceId,
     setDeviceId,
     scanning,
-    supportsTorch,
-    torchOn,
-    toggleTorch,
     error,
     manual,
     setManual: manual.setValue,

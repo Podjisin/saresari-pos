@@ -1,4 +1,4 @@
-import { Box, Select, Stack, Text, Button } from "@chakra-ui/react";
+import { Box, Select, Stack, Text } from "@chakra-ui/react";
 
 export interface ScannerPaneProps {
   videoRef: React.RefObject<HTMLVideoElement>;
@@ -6,9 +6,6 @@ export interface ScannerPaneProps {
   deviceId: string;
   setDeviceId: (id: string) => void;
   scanning: boolean;
-  supportsTorch: boolean;
-  torchOn: boolean;
-  toggleTorch: () => void;
   error: string | null;
 }
 
@@ -18,9 +15,6 @@ export function ScannerPane({
   deviceId,
   setDeviceId,
   scanning,
-  supportsTorch,
-  torchOn,
-  toggleTorch,
   error,
 }: ScannerPaneProps) {
   return (
@@ -29,7 +23,7 @@ export function ScannerPane({
         <Select value={deviceId} onChange={(e) => setDeviceId(e.target.value)}>
           {devices.map((d) => (
             <option key={d.deviceId} value={d.deviceId}>
-              {d.label || d.deviceId}
+              {d.label || `Camera ${d.deviceId.slice(-4)}`}
             </option>
           ))}
         </Select>
@@ -49,11 +43,6 @@ export function ScannerPane({
       {scanning && (
         <Stack direction="row" justify="space-between">
           <Text color="gray.500">Scanning...</Text>
-          {supportsTorch && (
-            <Button size="sm" onClick={toggleTorch}>
-              {torchOn ? "Flash Off" : "Flash On"}
-            </Button>
-          )}
         </Stack>
       )}
       {error && <Text color="red.500">{error}</Text>}
