@@ -49,7 +49,7 @@ interface UseReturn {
   deleteBatch: () => Promise<void>;
 }
 
-export function useInventoryDetailsForm({
+export function useInventoryDetailForm({
   batch,
   onItemUpdated,
   onItemDeleted,

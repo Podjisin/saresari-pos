@@ -10,7 +10,7 @@ import {
   HStack,
 } from "@chakra-ui/react";
 import { FiEdit, FiTrash2, FiSave } from "react-icons/fi";
-import { useInventoryDetailsForm } from "@/pages/inventory/hooks/useInventoryDetailForm";
+import { useInventoryDetailForm } from "@/pages/inventory/hooks/useInventoryDetailForm";
 import { InventoryHeader } from "./InventoryHeader";
 import { InventoryDisplay } from "./InventoryDisplay";
 import { InventoryEditForm } from "./InventoryEditForm";
@@ -47,7 +47,7 @@ export function InventoryDetailsModal({
     openDeleteDialog,
     closeDeleteDialog,
     deleteBatch,
-  } = useInventoryDetailsForm({ batch, onItemUpdated, onItemDeleted, onClose });
+  } = useInventoryDetailForm({ batch, onItemUpdated, onItemDeleted, onClose });
 
   if (!batch) return null;
 
