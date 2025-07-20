@@ -110,7 +110,9 @@ export default function InventoryList({ handlers }: InventoryListProps) {
         JOIN products p ON ib.product_id = p.id
         LEFT JOIN inventory_unit u ON p.unit_id = u.id
         LEFT JOIN inventory_category c ON p.category_id = c.id
-        WHERE (p.name LIKE ? OR p.barcode LIKE ? OR ib.batch_number LIKE ?)
+        WHERE
+          (p.name LIKE ? OR p.barcode LIKE ? OR ib.batch_number LIKE ?)
+          AND ib.is_deleted = 0
       `;
 
       const params: unknown[] = [
@@ -164,6 +166,7 @@ export default function InventoryList({ handlers }: InventoryListProps) {
         JOIN products p ON ib.product_id = p.id
         LEFT JOIN inventory_category c ON p.category_id = c.id
         WHERE (p.name LIKE ? OR p.barcode LIKE ? OR ib.batch_number LIKE ?)
+        AND ib.is_deleted = 0
       `;
 
       const params: unknown[] = [
