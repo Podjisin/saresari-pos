@@ -217,15 +217,47 @@ pub fn get_migrations() -> Vec<Migration> {
                 INSERT OR IGNORE INTO sales (total, cash_received, change) VALUES
                     (85.00, 100.00, 15.00),
                     (120.00, 150.00, 30.00),
-                    (45.00, 50.00, 5.00);
+                    (45.00, 50.00, 5.00),
+                    
+                    (170.00, 200.00, 30.00),
+                    (270.00, 300.00, 30.00);
                 
                 -- Sample sale items
                 INSERT OR IGNORE INTO sale_items (sale_id, batch_id, quantity, price_at_sale) VALUES
+                    -- Sale 1
                     (1, 1, 2, 25.00),  -- 2 Coca-Colas
                     (1, 3, 3, 10.00),  -- 3 Lucky Me
                     (2, 5, 1, 55.00),  -- 1 Pringles
                     (2, 8, 2, 35.00),  -- 2 Century Tuna
-                    (3, 10, 1, 120.00); -- 1 Ariel
+                    (3, 10, 1, 120.00), -- 1 Ariel
+
+                    -- Sale 2
+                    (1, 1, 2, 25.00),   -- Coca-Cola
+                    (1, 3, 3, 10.00),   -- Lucky Me
+                    (1, 8, 1, 35.00),   -- Century Tuna
+                    (1, 11, 2, 28.00),  -- Sprite
+                    
+                    -- Sale 3
+                    (2, 5, 1, 55.00),   -- Pringles
+                    (2, 8, 2, 35.00),   -- Century Tuna
+                    (2, 10, 1, 120.00), -- Ariel
+                    (2, 7, 1, 65.00),   -- Nescafe
+
+                    -- Sale 4
+                    (3, 6, 2, 55.00),   -- Pringles
+                    (3, 11, 1, 28.00),  -- Sprite
+                    (3, 9, 3, 22.00),   -- Safeguard
+
+                    -- Sale 5
+                    (4, 4, 4, 10.00),   -- Lucky Me (batch 2)
+                    (4, 12, 2, 35.00),  -- Sprite (batch 2)
+                    (4, 10, 1, 120.00), -- Ariel
+
+                    -- Sale 6
+                    (5, 7, 2, 65.00),   -- Nescafe
+                    (5, 9, 2, 22.00),   -- Safeguard
+                    (5, 3, 5, 10.00);   -- Lucky Me
+
             ",
             kind: MigrationKind::Up,
         },

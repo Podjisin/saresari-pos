@@ -11,7 +11,13 @@ import {
 } from "@chakra-ui/react";
 import { FiShoppingCart, FiClipboard, FiPlusCircle } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
-import { AreaChart, Area, ResponsiveContainer, LabelList } from "recharts";
+import {
+  AreaChart,
+  Area,
+  ResponsiveContainer,
+  LabelList,
+  XAxis,
+} from "recharts";
 import { useDashboardAnalytics } from "@/hooks/useDashboardAnalytics";
 import { StatCard, TopItemsCard } from "./components";
 
@@ -121,14 +127,16 @@ export default function HomePage() {
           <Heading size="md" mb={4}>
             Weekly Sales Overview
           </Heading>
-          <Box height="300px">
+          <Box height="290px">
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart
                 data={dailySales.map((val, i) => ({
                   name: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"][i],
                   value: val,
                 }))}
+                margin={{ top: 20, right: 20, left: 20, bottom: 20 }}
               >
+                <XAxis dataKey="name" />
                 <defs>
                   <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
                     <stop offset="5%" stopColor="#38B2AC" stopOpacity={0.8} />
