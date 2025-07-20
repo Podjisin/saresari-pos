@@ -61,9 +61,9 @@ export const getLowStockCount = async (db: Database): Promise<number> => {
 
 export const getDailySales = async (db: Database): Promise<number[]> => {
   const res = await db.select<{ weekday: number; total: number }[]>(
-    `SELECT strftime('%w', created_at) as weekday, SUM(total) as total
+    `SELECT strftime('%w', created_at, 'localtime') as weekday, SUM(total) as total
      FROM sales
-     WHERE date(created_at) >= date('now', '-6 days')
+     WHERE date(created_at, 'localtime') >= date('now', 'localtime', '-6 days')
      GROUP BY weekday`,
   );
 
@@ -78,7 +78,7 @@ export const getLastWeekSales = async (db: Database): Promise<number> => {
   const res = await db.select<{ total: number }[]>(
     `SELECT SUM(total) as total 
      FROM sales
-     WHERE date(created_at) BETWEEN date('now', '-13 days') AND date('now', '-7 days')`,
+     WHERE date(created_at, 'localtime') BETWEEN date('now', 'localtime', '-13 days') AND date('now', 'localtime', '-7 days')`,
   );
   return res[0]?.total ?? 0;
 };
@@ -89,7 +89,7 @@ export const getLastWeekTransactionCount = async (
   const res = await db.select<{ count: number }[]>(
     `SELECT COUNT(*) as count 
      FROM sales
-     WHERE date(created_at) BETWEEN date('now', '-13 days') AND date('now', '-7 days')`,
+     WHERE date(created_at, 'localtime') BETWEEN date('now', 'localtime', '-13 days') AND date('now', 'localtime', '-7 days')`,
   );
   return res[0]?.count ?? 0;
 };
