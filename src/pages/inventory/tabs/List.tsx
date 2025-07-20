@@ -40,15 +40,15 @@ import {
   FiFilter,
 } from "react-icons/fi";
 import { useState, useEffect } from "react";
-import { useInventory } from "../../../hooks/inventory/useInventory";
+import { useInventory } from "@/pages/inventory/hooks/useInventory";
 import { AddInventoryItemModal } from "../modals/Additem";
 import { InventoryDetailsModal } from "../modals/ItemDetails";
 import { BarcodeScanner } from "../modals/BarcodeScanner";
 import { Pagination } from "@/components/Pagination";
 import { useDebounce } from "@/hooks/useDebounce";
 import { format } from "date-fns";
-import { InventoryBatch } from "@/types/index";
-import type { Handlers } from "@/hooks/inventory/useAddInventoryForm";
+import { InventoryBatch } from "@/pages/inventory/types/index";
+import type { Handlers } from "@/pages/inventory/hooks/useAddInventoryForm";
 
 interface InventoryListProps {
   handlers: Handlers;

@@ -1,5 +1,5 @@
 import { Alert, AlertIcon, Box, Text } from "@chakra-ui/react";
-import { ProductInfo } from "@/hooks/inventory/useAddInventoryForm";
+import { ProductInfo } from "@/pages/inventory/hooks/useAddInventoryForm";
 
 interface ExistingProductAlertProps {
   product: ProductInfo;

@@ -38,7 +38,7 @@ import {
   HistoryQueryParams,
   InventoryChangeReason,
   HistoryStats,
-} from "@/hooks/inventory/useInventoryHistory";
+} from "@/pages/inventory/hooks/useInventoryHistory";
 import { Pagination } from "@/components/Pagination/Pagination";
 import { useDebounce } from "@/hooks/useDebounce";
 import { format } from "date-fns";
