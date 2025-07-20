@@ -20,11 +20,12 @@ export const useTopSellingProducts = (): {
 
     getTopSellingProducts(db)
       .then(setData)
-      .catch((err) =>
+      .catch((err) => {
+        console.error("[TopProducts] Failed:", err);
         setError(
           err instanceof Error ? err.message : "Failed to load top products.",
-        ),
-      )
+        );
+      })
       .finally(() => setIsLoading(false));
   }, [isConnected, db]);
 

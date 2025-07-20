@@ -82,9 +82,10 @@ export const getTopSellingProducts = async (
        p.id as product_id, 
        p.name, 
        SUM(si.quantity) as total_sold
-     FROM sales_items si
-     JOIN products p ON p.id = si.product_id
-     GROUP BY si.product_id
+     FROM sale_items si
+     JOIN inventory_batches b ON b.id = si.batch_id
+     JOIN products p ON p.id = b.product_id
+     GROUP BY p.id
      ORDER BY total_sold DESC
      LIMIT 5`,
   );
