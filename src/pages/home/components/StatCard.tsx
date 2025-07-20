@@ -41,6 +41,12 @@ export function StatCard({
     `${colorScheme}.200`,
   );
 
+  if (trendData.length !== 7) {
+    console.warn(
+      `[StatCard]: Trend data should have exactly 7 values, got ${trendData.length}`,
+    );
+  }
+
   const chartData = trendData.map((val, i) => ({
     name: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"][i],
     value: val,

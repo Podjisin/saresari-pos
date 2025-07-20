@@ -9,6 +9,7 @@ import {
   getLastWeekTransactionCount,
 } from "../services/statistics";
 import { determineTrendDirection } from "@/utils/trend";
+import { format, subDays } from "date-fns";
 
 export type AnalyticsData = {
   totalSales: number;
@@ -34,6 +35,11 @@ export const useDashboardAnalytics = (): {
   const fetchStatistics = useCallback(async () => {
     if (!db) return;
 
+    const endDateCurrentWeek = format(new Date(), "yyyy-MM-dd");
+    const startDateCurrentWeek = format(subDays(new Date(), 6), "yyyy-MM-dd");
+    const endDateLastWeek = format(subDays(new Date(), 7), "yyyy-MM-dd");
+    const startDateLastWeek = format(subDays(new Date(), 13), "yyyy-MM-dd");
+
     setIsLoading(true);
     setError(null);
 
@@ -46,12 +52,14 @@ export const useDashboardAnalytics = (): {
         lastWeekSales,
         lastWeekTransactionCount,
       ] = await Promise.all([
-        getTotalSales(db),
-        getTransactionCount(db),
+        getTotalSales(db, startDateCurrentWeek, endDateCurrentWeek),
+        getTransactionCount(db, startDateCurrentWeek, endDateCurrentWeek),
         getLowStockCount(db),
         getDailySales(db),
         getLastWeekSales(db),
         getLastWeekTransactionCount(db),
+        getTotalSales(db, startDateLastWeek, endDateLastWeek),
+        getTransactionCount(db, startDateLastWeek, endDateLastWeek),
       ]);
 
       const totalSalesChangePercent = lastWeekSales

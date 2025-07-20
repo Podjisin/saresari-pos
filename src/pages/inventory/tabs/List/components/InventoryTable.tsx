@@ -18,6 +18,7 @@ import {
 import { FiEdit2 } from "react-icons/fi";
 import { InventoryBatch } from "@/pages/inventory/types/index";
 import { format } from "date-fns";
+import { getExpirationStatus } from "@/utils/expirationStatus";
 
 type InventoryTableProps = {
   batches: InventoryBatch[];
@@ -44,14 +45,9 @@ export function InventoryTable({ batches, onEditBatch }: InventoryTableProps) {
         </Thead>
         <Tbody>
           {batches.map((batch) => {
-            const isExpired = batch.expiration_date
-              ? new Date(batch.expiration_date) < new Date()
-              : false;
-
-            const isExpiringSoon = batch.expiration_date
-              ? new Date(batch.expiration_date) <
-                  new Date(Date.now() + 30 * 24 * 60 * 60 * 1000) && !isExpired
-              : false;
+            const status = getExpirationStatus(batch.expiration_date);
+            const isExpired = status?.isExpired || false;
+            const isExpiringSoon = status?.isExpiringSoon || false;
 
             return (
               <Tr key={batch.id}>
@@ -87,10 +83,17 @@ export function InventoryTable({ batches, onEditBatch }: InventoryTableProps) {
                             ? "Expiring Soon"
                             : "Valid"}
                         :{" "}
-                        {format(
-                          new Date(batch.expiration_date),
-                          "MMM dd, yyyy",
-                        )}
+                        {(() => {
+                          try {
+                            return format(
+                              new Date(batch.expiration_date || ""),
+                              "MMM dd, yyyy",
+                            );
+                          } catch (err) {
+                            console.error("Invalid date format:", err);
+                            return "Invalid Date";
+                          }
+                        })()}
                       </Badge>
                     )}
                   </Stack>

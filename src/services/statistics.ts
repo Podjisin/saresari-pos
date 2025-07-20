@@ -6,17 +6,37 @@ export type TopProduct = {
   total_sold: number;
 };
 
-export const getTotalSales = async (db: Database): Promise<number> => {
-  const res = await db.select<{ total: number }[]>(
-    "SELECT SUM(total) as total FROM sales",
-  );
+export const getTotalSales = async (
+  db: Database,
+  startDate?: string,
+  endDate?: string,
+): Promise<number> => {
+  let query = "SELECT SUM(total) as total FROM sales";
+  const params: string[] = [];
+
+  if (startDate && endDate) {
+    query += " WHERE date(created_at) BETWEEN ? AND ?";
+    params.push(startDate, endDate);
+  }
+
+  const res = await db.select<{ total: number }[]>(query, params);
   return res[0]?.total ?? 0;
 };
 
-export const getTransactionCount = async (db: Database): Promise<number> => {
-  const res = await db.select<{ count: number }[]>(
-    "SELECT COUNT(*) as count FROM sales",
-  );
+export const getTransactionCount = async (
+  db: Database,
+  startDate?: string,
+  endDate?: string,
+): Promise<number> => {
+  let query = "SELECT COUNT(*) as count FROM sales";
+  const params: string[] = [];
+
+  if (startDate && endDate) {
+    query += " WHERE date(created_at) BETWEEN ? AND ?";
+    params.push(startDate, endDate);
+  }
+
+  const res = await db.select<{ count: number }[]>(query, params);
   return res[0]?.count ?? 0;
 };
 
@@ -24,7 +44,7 @@ export const getLowStockCount = async (db: Database): Promise<number> => {
   const thresholdRes = await db.select<{ value: string }[]>(
     "SELECT value FROM settings WHERE key = 'inventory_warning_threshold'",
   );
-  const threshold = parseInt(thresholdRes[0]?.value ?? "5");
+  const threshold = parseInt(thresholdRes[0]?.value ?? "5") || 5;
 
   const res = await db.select<{ count: number }[]>(
     `SELECT COUNT(*) as count

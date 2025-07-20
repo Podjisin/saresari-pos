@@ -9,7 +9,7 @@ export const useTopSellingProducts = (): {
 } => {
   const { db, isConnected } = useDatabase();
   const [data, setData] = useState<TopProduct[] | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {

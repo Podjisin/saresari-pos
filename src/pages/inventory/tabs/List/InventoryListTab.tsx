@@ -12,7 +12,7 @@ import {
   Show,
 } from "@chakra-ui/react";
 import { FiPlus, FiRefreshCw } from "react-icons/fi";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useInventory } from "@/pages/inventory/hooks/useInventory";
 import { AddInventoryItemModal } from "@/pages/inventory/modals/Additem";
 import { InventoryDetailsModal } from "@/pages/inventory/modals/ItemDetails";
@@ -28,6 +28,7 @@ export default function InventoryListTab() {
   const { query, isLoading, error, isInitializing, resetError } =
     useInventory();
   const [localLoading, setLocalLoading] = useState(false);
+  const [hasFetchedInitial, setHasFetchedInitial] = useState(false);
   const toast = useToast();
   // Modal states
   const [isScannerOpen, setIsScannerOpen] = useState(false);
@@ -53,13 +54,188 @@ export default function InventoryListTab() {
   });
   const totalPages = Math.ceil(pagination.totalItems / pagination.pageSize);
 
-  const fetchBatches = async () => {
+  // Helper function to build the WHERE clause
+  const buildWhereClause = (
+    debouncedSearchTerm: string,
+    categoryFilter: string,
+    expiryFilter: string,
+  ): {
+    clause: string;
+    params: unknown[];
+  } => {
+    let clause = `
+        (p.name LIKE ? OR p.barcode LIKE ? OR ib.batch_number LIKE ?)
+      AND ib.is_deleted = 0
+    `;
+    const params: unknown[] = [
+      `%${debouncedSearchTerm}%`,
+      `%${debouncedSearchTerm}%`,
+      `%${debouncedSearchTerm}%`,
+    ];
+
+    if (categoryFilter !== "all") {
+      clause += " AND c.name = ?";
+      params.push(categoryFilter);
+    }
+
+    if (expiryFilter === "expired") {
+      clause += " AND ib.expiration_date < date('now')";
+    } else if (expiryFilter === "expiring") {
+      clause +=
+        " AND ib.expiration_date BETWEEN date('now') AND date('now', '+30 days')";
+    } else if (expiryFilter === "valid") {
+      clause +=
+        " AND (ib.expiration_date IS NULL OR ib.expiration_date >= date('now'))";
+    }
+
+    return { clause, params };
+  };
+
+  const fetchBatches = useCallback(async () => {
     try {
       setLocalLoading(true);
       resetError();
       const offset = (pagination.currentPage - 1) * pagination.pageSize;
 
-      let queryStr = `
+      const { clause, params } = buildWhereClause(
+        debouncedSearchTerm,
+        categoryFilter,
+        expiryFilter,
+      );
+
+      const queryStr = `
+      SELECT 
+        ib.id,
+        ib.product_id,
+        p.name as product_name,
+        p.barcode,
+        ib.batch_number,
+        ib.quantity,
+        ib.cost_price,
+        p.selling_price,
+        ib.expiration_date,
+        ib.date_added,
+        u.name as unit_name,
+        c.name as category_name
+      FROM inventory_batches ib
+      JOIN products p ON ib.product_id = p.id
+      LEFT JOIN inventory_unit u ON p.unit_id = u.id
+      LEFT JOIN inventory_category c ON p.category_id = c.id
+      WHERE ${clause}
+      ORDER BY ib.expiration_date ASC, p.name ASC LIMIT ? OFFSET ?
+    `;
+
+      params.push(pagination.pageSize, offset);
+
+      const result = await query<InventoryBatch>(queryStr, { params });
+      setBatches(result || []);
+    } catch (err) {
+      const error = err instanceof Error ? err.message : "Unknown error";
+      console.error("Failed to fetch batches:", error);
+      toast({
+        title: "Failed to load inventory",
+        description: error,
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+    } finally {
+      setLocalLoading(false);
+    }
+  }, [
+    debouncedSearchTerm,
+    categoryFilter,
+    expiryFilter,
+    pagination.currentPage,
+    pagination.pageSize,
+    query,
+    toast,
+    resetError,
+  ]);
+
+  const fetchTotalCount = useCallback(async () => {
+    try {
+      const { clause, params } = buildWhereClause(
+        debouncedSearchTerm,
+        categoryFilter,
+        expiryFilter,
+      );
+
+      const countQuery = `
+      SELECT COUNT(*) as count 
+      FROM inventory_batches ib
+      JOIN products p ON ib.product_id = p.id
+      LEFT JOIN inventory_category c ON p.category_id = c.id
+      WHERE ${clause}
+    `;
+
+      const result = await query<{ count: number }>(countQuery, { params });
+      setPagination((prev) => ({
+        ...prev,
+        totalItems: result?.[0]?.count || 0,
+      }));
+    } catch (err) {
+      console.error("Failed to fetch total count:", err);
+      toast({
+        title: "Count query failed",
+        status: "error",
+        duration: 3000,
+      });
+    }
+  }, [debouncedSearchTerm, categoryFilter, expiryFilter, query, toast]);
+
+  const fetchCategories = useCallback(async () => {
+    try {
+      const result = await query<{ name: string }>(
+        "SELECT name FROM inventory_category ORDER BY name",
+      );
+      setCategories(result?.map((c) => c.name) || []);
+    } catch (err) {
+      console.error("Failed to fetch categories:", err);
+      setCategories([]);
+      toast({
+        title: "Failed to load categories",
+        description: err instanceof Error ? err.message : "Unknown error",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+    }
+  }, [query, toast]);
+
+  const refreshData = useCallback(() => {
+    const offset = (pagination.currentPage - 1) * pagination.pageSize;
+
+    const { clause, params } = buildWhereClause(
+      debouncedSearchTerm,
+      categoryFilter,
+      expiryFilter,
+    );
+
+    const run = async () => {
+      try {
+        setLocalLoading(true);
+        resetError();
+
+        // COUNT
+        const countQuery = `
+        SELECT COUNT(*) as count 
+        FROM inventory_batches ib
+        JOIN products p ON ib.product_id = p.id
+        LEFT JOIN inventory_category c ON p.category_id = c.id
+        WHERE ${clause}
+      `;
+        const countResult = await query<{ count: number }>(countQuery, {
+          params,
+        });
+
+        setPagination((prev) => ({
+          ...prev,
+          totalItems: countResult?.[0]?.count || 0,
+        }));
+
+        // BATCHES
+        const queryStr = `
         SELECT 
           ib.id,
           ib.product_id,
@@ -77,112 +253,41 @@ export default function InventoryListTab() {
         JOIN products p ON ib.product_id = p.id
         LEFT JOIN inventory_unit u ON p.unit_id = u.id
         LEFT JOIN inventory_category c ON p.category_id = c.id
-        WHERE
-          (p.name LIKE ? OR p.barcode LIKE ? OR ib.batch_number LIKE ?)
-          AND ib.is_deleted = 0
+        WHERE ${clause}
+        ORDER BY ib.expiration_date ASC, p.name ASC
+        LIMIT ? OFFSET ?
       `;
 
-      const params: unknown[] = [
-        `%${debouncedSearchTerm}%`,
-        `%${debouncedSearchTerm}%`,
-        `%${debouncedSearchTerm}%`,
-      ];
+        const fullParams = [...params, pagination.pageSize, offset];
+        const batchResult = await query<InventoryBatch>(queryStr, {
+          params: fullParams,
+        });
 
-      // Add category filter if not "all"
-      if (categoryFilter !== "all") {
-        queryStr += " AND c.name = ?";
-        params.push(categoryFilter);
+        setBatches(batchResult || []);
+      } catch (err) {
+        toast({
+          title: "Refresh failed",
+          description: err instanceof Error ? err.message : "Unknown error",
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+        });
+      } finally {
+        setLocalLoading(false);
       }
+    };
 
-      // Add expiry filter
-      if (expiryFilter === "expired") {
-        queryStr += " AND ib.expiration_date < date('now')";
-      } else if (expiryFilter === "expiring") {
-        queryStr +=
-          " AND ib.expiration_date BETWEEN date('now') AND date('now', '+30 days')";
-      } else if (expiryFilter === "valid") {
-        queryStr +=
-          " AND (ib.expiration_date IS NULL OR ib.expiration_date >= date('now'))";
-      }
-
-      queryStr +=
-        " ORDER BY ib.expiration_date ASC, p.name ASC LIMIT ? OFFSET ?";
-      params.push(pagination.pageSize, offset);
-
-      const result = await query<InventoryBatch>(queryStr, { params });
-      setBatches(result || []);
-    } catch (err) {
-      console.error("Database error:", err);
-      toast({
-        title: "Failed to load inventory",
-        description: err instanceof Error ? err.message : "Unknown error",
-        status: "error",
-        duration: 5000,
-        isClosable: true,
-      });
-    } finally {
-      setLocalLoading(false);
-    }
-  };
-
-  const fetchTotalCount = async () => {
-    try {
-      let countQuery = `
-        SELECT COUNT(*) as count 
-        FROM inventory_batches ib
-        JOIN products p ON ib.product_id = p.id
-        LEFT JOIN inventory_category c ON p.category_id = c.id
-        WHERE (p.name LIKE ? OR p.barcode LIKE ? OR ib.batch_number LIKE ?)
-        AND ib.is_deleted = 0
-      `;
-
-      const params: unknown[] = [
-        `%${debouncedSearchTerm}%`,
-        `%${debouncedSearchTerm}%`,
-        `%${debouncedSearchTerm}%`,
-      ];
-
-      if (categoryFilter !== "all") {
-        countQuery += " AND c.name = ?";
-        params.push(categoryFilter);
-      }
-
-      if (expiryFilter === "expired") {
-        countQuery += " AND ib.expiration_date < date('now')";
-      } else if (expiryFilter === "expiring") {
-        countQuery +=
-          " AND ib.expiration_date BETWEEN date('now') AND date('now', '+30 days')";
-      } else if (expiryFilter === "valid") {
-        countQuery +=
-          " AND (ib.expiration_date IS NULL OR ib.expiration_date >= date('now'))";
-      }
-
-      const result = await query<{ count: number }>(countQuery, { params });
-      setPagination((prev) => ({
-        ...prev,
-        totalItems: result?.[0]?.count || 0,
-      }));
-    } catch (err) {
-      console.error("Failed to fetch total count:", err);
-      toast({
-        title: "Count query failed",
-        status: "error",
-        duration: 3000,
-      });
-    }
-  };
-
-  const fetchCategories = async () => {
-    try {
-      const result = await query<{ name: string }>(
-        "SELECT name FROM inventory_category ORDER BY name",
-      );
-      setCategories(result?.map((c) => c.name) || []);
-    } catch (err) {
-      console.error("Failed to fetch categories:", err);
-      setCategories([]);
-    }
-  };
+    run();
+  }, [
+    pagination.currentPage,
+    pagination.pageSize,
+    debouncedSearchTerm,
+    categoryFilter,
+    expiryFilter,
+    query,
+    toast,
+    resetError,
+  ]);
 
   const handlePageChange = (page: number) => {
     setPagination((prev) => ({ ...prev, currentPage: page }));
@@ -214,18 +319,31 @@ export default function InventoryListTab() {
   };
 
   useEffect(() => {
-    if (!isInitializing) {
+    if (!isInitializing && !hasFetchedInitial) {
+      fetchCategories();
       fetchTotalCount();
       fetchBatches();
-      fetchCategories();
+      setHasFetchedInitial(true);
     }
   }, [
     isInitializing,
-    pagination.currentPage,
-    pagination.pageSize,
+    hasFetchedInitial,
+    fetchCategories,
+    fetchTotalCount,
+    fetchBatches,
+  ]);
+
+  useEffect(() => {
+    if (hasFetchedInitial) {
+      fetchTotalCount();
+      fetchBatches();
+    }
+  }, [
     debouncedSearchTerm,
     categoryFilter,
     expiryFilter,
+    pagination.currentPage,
+    pagination.pageSize,
   ]);
 
   if (isInitializing) {
@@ -256,10 +374,7 @@ export default function InventoryListTab() {
           >
             <Button
               leftIcon={<FiRefreshCw />}
-              onClick={() => {
-                fetchTotalCount();
-                fetchBatches();
-              }}
+              onClick={refreshData}
               isLoading={localLoading || isLoading}
             >
               Refresh

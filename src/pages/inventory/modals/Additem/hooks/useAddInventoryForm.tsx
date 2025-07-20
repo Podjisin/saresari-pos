@@ -126,18 +126,22 @@ export function useAddInventoryForm({
           categories,
         }));
 
-        const existing = await query<ProductInfo>(
-          `
-        SELECT p.id, p.name, p.selling_price, p.unit_id, p.category_id,
-               u.name as unit_name, c.name as category_name
-        FROM products p
-          LEFT JOIN inventory_unit u ON p.unit_id = u.id
-          LEFT JOIN inventory_category c ON p.category_id = c.id
-        WHERE p.barcode = ? LIMIT 1
-        `,
-          { params: [barcode] },
-        );
-
+        let existing: ProductInfo[] = [];
+        if (barcode) {
+          existing = await query<ProductInfo>(
+            `
+            SELECT p.id, p.name, p.selling_price, p.unit_id, p.category_id,
+              u.name as unit_name, c.name as category_name
+            FROM products p
+              LEFT JOIN inventory_unit u ON p.unit_id = u.id
+              LEFT JOIN inventory_category c ON p.category_id = c.id
+            WHERE p.barcode = ? LIMIT 1
+          `,
+            {
+              params: [barcode],
+            },
+          );
+        }
         if (!mounted) return;
 
         if (existing.length) {

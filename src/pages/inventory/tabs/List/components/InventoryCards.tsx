@@ -109,9 +109,17 @@ export function InventoryCards({ batches, onEditBatch }: InventoryCardsProps) {
                     <Text fontSize="sm" fontWeight="bold">
                       Profit
                     </Text>
-                    <Text color="green.500" fontWeight="bold">
-                      ₱{(batch.selling_price - batch.cost_price).toFixed(2)}
-                    </Text>
+                    {(() => {
+                      const profit = batch.selling_price - batch.cost_price;
+                      return (
+                        <Text
+                          color={profit >= 0 ? "green.500" : "red.500"}
+                          fontWeight="bold"
+                        >
+                          ₱{profit.toFixed(2)}
+                        </Text>
+                      );
+                    })()}
                   </Box>
                 </HStack>
 
