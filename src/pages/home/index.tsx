@@ -24,7 +24,7 @@ import {
 } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import { AreaChart, Area, ResponsiveContainer, LabelList } from "recharts";
-import { useStatistics } from "../../hooks/useStatistics";
+import { useDashboardAnalytics } from "@/hooks/useDashboardAnalytics";
 
 // Props for individual statistic cards
 export type StatCardProps = {
@@ -133,7 +133,7 @@ export default function HomePage() {
   const weeklyOverviewBorderBg = useColorModeValue("gray.200", "gray.600");
 
   const navigate = useNavigate();
-  const { data, isLoading, error } = useStatistics();
+  const { data, isLoading, error } = useDashboardAnalytics();
 
   if (isLoading) {
     return (

@@ -48,13 +48,8 @@ import { Pagination } from "@/components/Pagination";
 import { useDebounce } from "@/hooks/useDebounce";
 import { format } from "date-fns";
 import { InventoryBatch } from "@/pages/inventory/types/index";
-import type { Handlers } from "@/pages/inventory/modals/Additem/hooks/useAddInventoryForm";
 
-interface InventoryListProps {
-  handlers: Handlers;
-}
-
-export default function InventoryList({ handlers }: InventoryListProps) {
+export default function InventoryList() {
   const [batches, setBatches] = useState<InventoryBatch[]>([]);
   const { query, isLoading, error, isInitializing, resetError } =
     useInventory();
@@ -233,7 +228,6 @@ export default function InventoryList({ handlers }: InventoryListProps) {
     setScannedBarcode(barcode);
     setIsScannerOpen(false);
     setIsAddModalOpen(true);
-    handlers.setBarcode(barcode);
   };
 
   const handleItemAdded = () => {

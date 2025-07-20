@@ -31,12 +31,16 @@ export function AddInventoryItemModal({
   const { formState, handlers, submit, resetForm, isLoading } =
     useAddInventoryForm({ barcode, toast, onItemAdded, onClose });
 
+  const handleClose = () => {
+    resetForm();
+    onClose();
+  };
+
   return (
     <Modal
       isOpen={isOpen}
       onClose={() => {
-        resetForm();
-        onClose();
+        handleClose();
       }}
       size="lg"
     >
@@ -59,7 +63,13 @@ export function AddInventoryItemModal({
           />
         </ModalBody>
         <ModalFooter>
-          <Button variant="ghost" mr={3} onClick={onClose}>
+          <Button
+            variant="ghost"
+            mr={3}
+            onClick={() => {
+              handleClose();
+            }}
+          >
             Cancel
           </Button>
           <Button colorScheme="blue" onClick={submit} isLoading={isLoading}>

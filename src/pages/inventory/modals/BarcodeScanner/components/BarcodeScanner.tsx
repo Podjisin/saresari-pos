@@ -102,7 +102,11 @@ export function BarcodeScanner({
           {manual.mode === "manual" && (
             <Button
               colorScheme="blue"
-              onClick={submitManual}
+              onClick={() => {
+                submitManual();
+                reset();
+                onClose();
+              }}
               isDisabled={!manual.value.trim()}
             >
               Submit
