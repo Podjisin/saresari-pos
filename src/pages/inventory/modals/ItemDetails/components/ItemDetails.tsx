@@ -10,7 +10,7 @@ import {
   HStack,
 } from "@chakra-ui/react";
 import { FiEdit, FiTrash2, FiSave } from "react-icons/fi";
-import { useInventoryDetailForm } from "@/pages/inventory/hooks/useInventoryDetailForm";
+import { useInventoryDetailForm } from "@/pages/inventory/modals/ItemDetails/hooks/useInventoryDetailForm";
 import { InventoryHeader } from "./InventoryHeader";
 import { InventoryDisplay } from "./InventoryDisplay";
 import { InventoryEditForm } from "./InventoryEditForm";

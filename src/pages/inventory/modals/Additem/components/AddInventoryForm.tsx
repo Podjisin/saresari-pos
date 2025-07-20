@@ -13,7 +13,7 @@ import { DatePicker } from "@/components/DatePicker";
 import type {
   FormState,
   Handlers,
-} from "@/pages/inventory/hooks/useAddInventoryForm";
+} from "@/pages/inventory/modals/Additem/hooks/useAddInventoryForm";
 
 interface AddInventoryFormProps {
   state: FormState;

@@ -1,2 +1,2 @@
-export { AddInventoryItemModal } from "./Additem";
-export type { AddInventoryItemModalProps } from "./Additem";
+export { AddInventoryItemModal } from "./components/Additem";
+export type { AddInventoryItemModalProps } from "./components/Additem";

@@ -11,7 +11,7 @@ import type {
   Unit,
   Category,
   FormData,
-} from "@/pages/inventory/hooks/useInventoryDetailForm";
+} from "@/pages/inventory/modals/ItemDetails/hooks/useInventoryDetailForm";
 
 interface InventoryEditFormProps {
   formData: FormData & { set: (update: Partial<FormData>) => void };

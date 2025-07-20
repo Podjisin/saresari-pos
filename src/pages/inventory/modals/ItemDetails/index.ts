@@ -1,2 +1,2 @@
-export { InventoryDetailsModal } from "./ItemDetails";
-export type { InventoryDetailsModalProps } from "./ItemDetails";
+export { InventoryDetailsModal } from "./components/ItemDetails";
+export type { InventoryDetailsModalProps } from "./components/ItemDetails";

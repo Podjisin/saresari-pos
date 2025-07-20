@@ -1,6 +1,6 @@
 import { useState, useRef, useCallback } from "react";
 import { useToast } from "@chakra-ui/react";
-import { useInventory } from "./useInventory";
+import { useInventory } from "../../../hooks/useInventory";
 import type { InventoryBatch } from "@/pages/inventory/types/index";
 
 export interface Unit {
