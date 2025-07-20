@@ -119,3 +119,5 @@ This project is licensed under the MIT License.
 
 Have feedback or want to contribute?
 Feel free to open an issue or reach out!
+
+<img src="https://views-counter.vercel.app/badge?pageId=https%3A%2F%2Fgithub%2Ecom%2FPodjisin%2Fsaresari-pos&leftColor=c0c0c0&rightColor=0adb3f&type=total&label=Visitors&style=none" alt="Views Counter">

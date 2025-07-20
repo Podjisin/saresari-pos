@@ -1,5 +1,5 @@
 import { Tabs, TabList, Tab, TabPanels, TabPanel } from "@chakra-ui/react";
-import InventoryList from "./tabs/List";
+import InventoryListTab from "./tabs/List/InventoryListTab";
 import InventoryHistory from "./tabs/History";
 
 export default function InventoryPage() {
@@ -12,7 +12,7 @@ export default function InventoryPage() {
 
       <TabPanels>
         <TabPanel px={0}>
-          <InventoryList />
+          <InventoryListTab />
         </TabPanel>
         <TabPanel px={0}>
           <InventoryHistory />

@@ -105,31 +105,45 @@ export function useAddInventoryForm({
   };
 
   useEffect(() => {
-    if (!barcode) return;
+    if (barcode == null) return;
+
     let mounted = true;
-    (async () => {
+
+    const loadData = async () => {
       try {
         const units = await query<{ id: number; name: string }>(
           "SELECT id, name FROM inventory_unit",
         );
-        if (!mounted) return;
         const categories = await query<{ id: number; name: string }>(
           "SELECT id, name FROM inventory_category",
         );
-        setFormState((s) => ({ ...s, units, categories }));
+
         if (!mounted) return;
-        const existing = await query<ProductInfo>(
-          `
-          SELECT p.id, p.name, p.selling_price, p.unit_id, p.category_id,
-                 u.name as unit_name, c.name as category_name
-          FROM products p
-            LEFT JOIN inventory_unit u ON p.unit_id = u.id
-            LEFT JOIN inventory_category c ON p.category_id = c.id
-          WHERE p.barcode = ? LIMIT 1
+        setFormState((s) => ({
+          ...s,
+          barcode,
+          units,
+          categories,
+        }));
+
+        let existing: ProductInfo[] = [];
+        if (barcode) {
+          existing = await query<ProductInfo>(
+            `
+            SELECT p.id, p.name, p.selling_price, p.unit_id, p.category_id,
+              u.name as unit_name, c.name as category_name
+            FROM products p
+              LEFT JOIN inventory_unit u ON p.unit_id = u.id
+              LEFT JOIN inventory_category c ON p.category_id = c.id
+            WHERE p.barcode = ? LIMIT 1
           `,
-          { params: [barcode] },
-        );
+            {
+              params: [barcode],
+            },
+          );
+        }
         if (!mounted) return;
+
         if (existing.length) {
           const product = existing[0];
           setFormState((s) => ({
@@ -144,9 +158,9 @@ export function useAddInventoryForm({
           }));
         }
       } catch (err) {
-        if (!mounted) return;
         const error = err instanceof Error ? err.message : "Unknown error";
         console.error("Failed to load inventory data:", error);
+        if (!mounted) return;
         toast({
           title: "Loading failed",
           description: "Could not load required data",
@@ -154,7 +168,9 @@ export function useAddInventoryForm({
           duration: 3000,
         });
       }
-    })();
+    };
+
+    loadData();
 
     return () => {
       mounted = false;

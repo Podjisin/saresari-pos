@@ -59,8 +59,10 @@ export function useInventory() {
 
   // Sync database error with local error state
   useEffect(() => {
-    if (dbError) setError(dbError);
-  }, [dbError]);
+    if (dbError && error !== dbError) {
+      setError(dbError);
+    }
+  }, [dbError, error]);
 
   /**
    * Records inventory changes in the history table

@@ -112,14 +112,17 @@ export function useBarcodeScanner(
 
   const submitManual = () => {
     const text = manual.value.trim();
-    if (text) onScanComplete(text);
-    else
+    if (!text) {
       toast({
         title: "Invalid barcode",
         description: "Enter a valid code",
         status: "error",
         duration: 3000,
       });
+      return;
+    }
+
+    onScanComplete(text);
   };
 
   const reset = useCallback(() => {
