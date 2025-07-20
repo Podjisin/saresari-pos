@@ -16,6 +16,15 @@ type ManualState = {
   setValue: (v: string) => void;
 };
 
+/**
+ * React hook for managing barcode scanning using the device camera or manual input.
+ *
+ * Provides camera device selection, scanning state management, error handling, and manual barcode entry. Integrates with Chakra UI toast notifications for user feedback and invokes a callback when a barcode is successfully scanned or entered.
+ *
+ * @param onScanComplete - Callback invoked with the scanned or manually entered barcode string.
+ * @param toast - Chakra UI toast function for displaying notifications.
+ * @returns An object containing references, state, and functions for barcode scanning and manual entry management.
+ */
 export function useBarcodeScanner(
   onScanComplete: (barcode: string) => void,
   toast: ReturnType<typeof useToast>,

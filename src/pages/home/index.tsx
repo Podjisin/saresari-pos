@@ -21,6 +21,13 @@ import {
 import { useDashboardAnalytics } from "@/hooks/useDashboardAnalytics";
 import { StatCard, TopItemsCard } from "./components";
 
+/**
+ * Renders the main dashboard page for the Sari-Sari POS system, displaying key business statistics, weekly sales trends, and top-selling items.
+ *
+ * Shows loading and error states while fetching analytics data, and provides navigation buttons for common actions.
+ *
+ * @returns The dashboard interface as a React element.
+ */
 export default function HomePage() {
   const cardBg = useColorModeValue("white", "gray.800");
   const weeklyOverviewBorderBg = useColorModeValue("gray.200", "gray.600");

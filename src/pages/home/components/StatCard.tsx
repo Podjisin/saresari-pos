@@ -21,6 +21,20 @@ export type StatCardProps = {
   colorScheme?: string;
 };
 
+/**
+ * Displays a statistical summary card with a label, value, icon, trend indicator, and a 7-day area chart.
+ *
+ * Renders a visually styled card showing a main statistic, an associated icon, and a subtle area chart representing weekly trend data. Optionally displays a badge with a trend direction and change value if provided.
+ *
+ * @param label - The label describing the statistic.
+ * @param value - The main statistic value to display.
+ * @param icon - The icon component to represent the statistic.
+ * @param trendData - An array of 7 numbers representing data points for each day of the week.
+ * @param trend - Optional trend direction ("up", "down", or "flat"). Defaults to "flat".
+ * @param change - Optional string indicating the amount of change.
+ * @param colorScheme - Optional color scheme for theming. Defaults to "gray".
+ * @returns A React element rendering the stat card.
+ */
 export function StatCard({
   label,
   value,

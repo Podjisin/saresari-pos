@@ -10,6 +10,11 @@ import {
 } from "@chakra-ui/react";
 import { useTopSellingProducts } from "@/hooks/useTopSellingProducts";
 
+/**
+ * Displays a card listing the top selling products with their sales counts.
+ *
+ * Fetches product data using a custom hook and adapts its appearance based on the current color mode. Shows a loading spinner while fetching, an error message if loading fails, a placeholder if no products are found, or a styled list of products with their total units sold.
+ */
 export function TopItemsCard() {
   const { data, isLoading, error } = useTopSellingProducts();
   const cardBg = useColorModeValue("white", "gray.800");
