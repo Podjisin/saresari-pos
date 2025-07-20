@@ -23,6 +23,11 @@ import { InventoryBatch } from "@/pages/inventory/types/index";
 
 import { InventoryCards, InventoryFilters, InventoryTable } from "./components";
 
+/**
+ * Displays and manages a paginated, filterable inventory list with support for searching, category and expiry filtering, and CRUD operations via modals.
+ *
+ * Provides responsive UI for viewing inventory batches as a table or cards, handles data fetching and error states, and integrates barcode scanning and item detail modals for adding and editing inventory items.
+ */
 export default function InventoryListTab() {
   const [batches, setBatches] = useState<InventoryBatch[]>([]);
   const { query, isLoading, error, isInitializing, resetError } =

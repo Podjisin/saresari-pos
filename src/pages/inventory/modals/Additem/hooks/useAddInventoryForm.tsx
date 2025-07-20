@@ -48,6 +48,13 @@ interface UseAddInventoryFormArgs {
   onClose: () => void;
 }
 
+/**
+ * React hook for managing the state and logic of an add-inventory form, including field updates, validation, data loading, and submission.
+ *
+ * Initializes form state, loads units and categories, detects existing products by barcode, and provides handlers for updating form fields. Handles form submission with validation, product creation or update, and inventory batch addition. Exposes form state, field handlers, a submit function, a reset function, and loading status.
+ *
+ * @returns An object containing the current form state, field handlers, a submit function, a reset function, and a loading indicator.
+ */
 export function useAddInventoryForm({
   barcode,
   toast,

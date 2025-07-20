@@ -1,5 +1,16 @@
 use tauri_plugin_sql::{Migration, MigrationKind};
 
+/// Returns the list of database migrations required to set up and seed the retail inventory and sales system.
+///
+/// The migrations include table creation for categories, units, products, inventory batches, sales, sale items, inventory history, settings, returns, return items, and product history. They also seed initial data for categories, units, products, inventory batches, sales, sale items, and application settings. Each migration is versioned and includes a description, SQL commands, and migration kind.
+///
+/// # Examples
+///
+/// ```
+/// let migrations = get_migrations();
+/// assert!(!migrations.is_empty());
+/// assert_eq!(migrations[0].version, 1);
+/// ```
 pub fn get_migrations() -> Vec<Migration> {
     vec![
         // 1. Categories

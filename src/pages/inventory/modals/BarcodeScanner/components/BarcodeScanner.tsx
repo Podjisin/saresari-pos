@@ -24,6 +24,11 @@ export interface BarcodeScannerProps {
   onScanComplete: (barcode: string) => void;
 }
 
+/**
+ * Displays a modal dialog for barcode scanning, allowing users to scan via camera or enter a barcode manually.
+ *
+ * When opened, users can switch between scanning with a camera or manual input. On successful scan or manual submission, the provided callback is invoked with the scanned barcode value, and the modal closes.
+ */
 export function BarcodeScanner({
   isOpen,
   onClose,

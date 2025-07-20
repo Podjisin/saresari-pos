@@ -50,6 +50,13 @@ export interface ProductUpsert {
   category_id?: number;
 }
 
+/**
+ * Provides a set of functions for managing inventory and product data, including batch operations, sales, transfers, and product upserts, with integrated database access, error handling, and UI feedback.
+ *
+ * Returns an object containing inventory and product management methods, loading and error states, and database initialization status. All operations are performed with transactional safety where appropriate and update inventory or product history as needed.
+ *
+ * @returns An object with inventory and product management functions, loading and error state, and a method to reset errors.
+ */
 export function useInventory() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);

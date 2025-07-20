@@ -21,6 +21,15 @@ type InventoryCardsProps = {
   onEditBatch: (batch: InventoryBatch) => void;
 };
 
+/**
+ * Displays a list of inventory batch cards with product, stock, pricing, and expiration details.
+ *
+ * Renders each batch as a card showing product name, barcode, batch number, expiration status, stock quantity, category, cost price, selling price, and calculated profit. Includes an "Edit" button for each batch that triggers the provided callback with the batch data.
+ *
+ * @param batches - The array of inventory batch objects to display.
+ * @param onEditBatch - Callback invoked when the "Edit" button is clicked for a batch.
+ * @returns A stack of styled inventory batch cards.
+ */
 export function InventoryCards({ batches, onEditBatch }: InventoryCardsProps) {
   const tableBg = useColorModeValue("white", "gray.800");
 

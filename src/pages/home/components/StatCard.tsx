@@ -21,6 +21,13 @@ export type StatCardProps = {
   colorScheme?: string;
 };
 
+/**
+ * Displays a statistical summary card with a label, value, icon, trend indicator, and a weekly trend area chart.
+ *
+ * Renders a styled card showing the provided statistic, an icon, and a small area chart representing trend data for the past week. Optionally displays a badge with a trend direction and change value if provided.
+ *
+ * @returns The rendered statistical summary card component.
+ */
 export function StatCard({
   label,
   value,

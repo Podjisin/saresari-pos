@@ -16,6 +16,15 @@ type ManualState = {
   setValue: (v: string) => void;
 };
 
+/**
+ * React hook for barcode scanning using the device camera or manual input, with error handling and UI feedback integration.
+ *
+ * Provides camera device management, scanning state, error reporting, manual entry mode, and exposes functions for submitting manual codes and resetting the scanner. Invokes the provided callback when a barcode is successfully scanned or entered.
+ *
+ * @param onScanComplete - Callback invoked with the scanned or manually entered barcode string
+ * @param toast - Function for displaying toast notifications
+ * @returns An object containing refs, device list, scanning state, error message, manual input state, and control functions
+ */
 export function useBarcodeScanner(
   onScanComplete: (barcode: string) => void,
   toast: ReturnType<typeof useToast>,

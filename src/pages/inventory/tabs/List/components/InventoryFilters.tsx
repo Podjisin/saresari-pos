@@ -24,6 +24,13 @@ interface InventoryFiltersProps {
   onReset: () => void;
 }
 
+/**
+ * Renders a responsive filter panel for inventory items, including search, category, and expiry filters.
+ *
+ * Provides input controls for searching products by name, barcode, or batch, selecting a category from a list, and filtering by expiry status. Includes a reset button to clear all filters.
+ *
+ * @param categories - List of available categories to display in the category filter dropdown
+ */
 export function InventoryFilters({
   searchTerm,
   setSearchTerm,
