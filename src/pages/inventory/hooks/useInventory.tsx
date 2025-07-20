@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import { useDatabase } from "../useDatabase";
+import { useDatabase } from "../../../hooks/useDatabase";
 import { useToast } from "@chakra-ui/react";
 // Type definitions
 export type QueryOptions<T = unknown> = {

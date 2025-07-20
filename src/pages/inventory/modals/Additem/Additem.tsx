@@ -9,7 +9,7 @@ import {
   Button,
   useToast,
 } from "@chakra-ui/react";
-import { useAddInventoryForm } from "@/hooks/inventory/useAddInventoryForm";
+import { useAddInventoryForm } from "@/pages/inventory/hooks/useAddInventoryForm";
 import { AddInventoryForm } from "./AddInventoryForm";
 import { ExistingProductAlert } from "./ExistingProductAlert";
 

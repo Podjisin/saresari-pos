@@ -1,5 +1,5 @@
 import { Stack, Box, Text, Alert, AlertIcon } from "@chakra-ui/react";
-import { InventoryBatch } from "@/types/InventoryBatch";
+import { InventoryBatch } from "@/pages/inventory/types/InventoryBatch";
 
 interface InventoryDisplayProps {
   batch: InventoryBatch;

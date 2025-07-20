@@ -10,12 +10,12 @@ import {
   HStack,
 } from "@chakra-ui/react";
 import { FiEdit, FiTrash2, FiSave } from "react-icons/fi";
-import { useInventoryDetailsForm } from "@/hooks/inventory/useInventoryDetailForm";
+import { useInventoryDetailsForm } from "@/pages/inventory/hooks/useInventoryDetailForm";
 import { InventoryHeader } from "./InventoryHeader";
 import { InventoryDisplay } from "./InventoryDisplay";
 import { InventoryEditForm } from "./InventoryEditForm";
 import { DeleteConfirmationDialog } from "./DeleteConfirmationDialog";
-import { InventoryBatch } from "@/types/InventoryBatch";
+import { InventoryBatch } from "@/pages/inventory/types/InventoryBatch";
 
 export interface InventoryDetailsModalProps {
   isOpen: boolean;
