@@ -14,6 +14,7 @@ export function TopItemsCard() {
   const { data, isLoading, error } = useTopSellingProducts();
   const cardBg = useColorModeValue("white", "gray.800");
   const borderColor = useColorModeValue("gray.200", "gray.600");
+  const elseBg = useColorModeValue("gray.50", "gray.700");
 
   return (
     <Box
@@ -41,7 +42,7 @@ export function TopItemsCard() {
               justifyContent="space-between"
               p={3}
               borderRadius="md"
-              bg={useColorModeValue("gray.50", "gray.700")}
+              bg={elseBg}
             >
               <Text fontWeight="medium">{product.name}</Text>
               <Badge colorScheme="green">Sold: {product.total_sold}</Badge>
