@@ -50,6 +50,13 @@ export interface ProductUpsert {
   category_id?: number;
 }
 
+/**
+ * Provides a set of inventory and product management operations with integrated database access, error handling, and user notifications.
+ *
+ * This React hook exposes methods for adding, updating, deleting, and transferring inventory batches; recording inventory and product changes; creating sales; and performing generic queries and mutations. It manages loading and error states, synchronizes with database initialization and errors, and displays toast notifications for user feedback.
+ *
+ * @returns An object containing inventory and product management methods, loading and error states, and utility functions.
+ */
 export function useInventory() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
