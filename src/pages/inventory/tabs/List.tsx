@@ -40,7 +40,7 @@ import {
   FiFilter,
 } from "react-icons/fi";
 import { useState, useEffect } from "react";
-import { useInventory } from "../hooks/useInventory";
+import { useInventory } from "@/pages/inventory/hooks/useInventory";
 import { AddInventoryItemModal } from "../modals/Additem";
 import { InventoryDetailsModal } from "../modals/ItemDetails";
 import { BarcodeScanner } from "../modals/BarcodeScanner";

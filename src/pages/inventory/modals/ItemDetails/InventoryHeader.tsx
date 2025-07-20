@@ -1,5 +1,5 @@
 import { HStack, Text, Badge } from "@chakra-ui/react";
-import { InventoryBatch } from "@/pages/inventory/types/index";
+import { InventoryBatch } from "@/pages/inventory/types";
 
 export function InventoryHeader({ batch }: { batch: InventoryBatch }) {
   return (
