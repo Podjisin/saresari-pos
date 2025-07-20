@@ -1,15 +1,14 @@
 import { useState, useEffect, useCallback } from "react";
 import { useDatabase } from "../useDatabase";
 import { useToast } from "@chakra-ui/react";
-
 // Type definitions
-type QueryOptions<T = unknown> = {
+export type QueryOptions<T = unknown> = {
   params?: unknown[];
   skip?: boolean;
   initialData?: T[];
 };
 
-type InventoryChangeReason =
+export type InventoryChangeReason =
   | "initial_stock"
   | "restock"
   | "sale"
@@ -23,7 +22,7 @@ type InventoryChangeReason =
   | "split"
   | "other";
 
-interface InventoryBatch {
+export interface InventoryBatchInput {
   product_id: number;
   quantity: number;
   cost_price: number;
@@ -31,19 +30,19 @@ interface InventoryBatch {
   batch_number?: string | null;
 }
 
-interface BatchUpdate {
+export interface BatchUpdate {
   cost_price?: number;
   expiration_date?: string | null;
   batch_number?: string | null;
 }
 
-interface SaleItem {
+export interface SaleItem {
   batchId: number;
   quantity: number;
   priceAtSale: number;
 }
 
-interface ProductUpsert {
+export interface ProductUpsert {
   name: string;
   barcode: string | null;
   selling_price: number;
@@ -94,7 +93,7 @@ export function useInventory() {
    * Adds a new inventory batch and records the initial stock
    */
   const addInventoryBatch = useCallback(
-    async (batch: InventoryBatch) => {
+    async (batch: InventoryBatchInput) => {
       try {
         setIsLoading(true);
         setError(null);
@@ -215,9 +214,10 @@ export function useInventory() {
         );
 
         // Delete the batch
-        await db.execute("DELETE FROM inventory_batches WHERE id = ?", [
-          batchId,
-        ]);
+        await db.execute(
+          "UPDATE inventory_batches SET is_deleted = 1, deleted_at = datetime('now') WHERE id = ?",
+          [batchId],
+        );
 
         return true;
       } catch (err) {
