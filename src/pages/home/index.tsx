@@ -3,135 +3,21 @@ import {
   Heading,
   Text,
   SimpleGrid,
-  Stat,
-  StatLabel,
-  StatNumber,
   Button,
   Stack,
-  Icon,
-  Flex,
-  Badge,
   Spinner,
   Center,
   useColorModeValue,
 } from "@chakra-ui/react";
-import {
-  FiShoppingCart,
-  FiClipboard,
-  FiPlusCircle,
-  FiTrendingUp,
-  FiTrendingDown,
-} from "react-icons/fi";
+import { FiShoppingCart, FiClipboard, FiPlusCircle } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import { AreaChart, Area, ResponsiveContainer, LabelList } from "recharts";
 import { useDashboardAnalytics } from "@/hooks/useDashboardAnalytics";
-
-// Props for individual statistic cards
-export type StatCardProps = {
-  label: string;
-  value: string;
-  icon: React.ElementType;
-  trendData: number[];
-  trend?: "up" | "down" | "flat";
-  change?: string;
-  colorScheme?: string;
-};
-
-function StatCard({
-  label,
-  value,
-  icon,
-  trendData,
-  trend = "flat",
-  change,
-  colorScheme = "gray",
-}: StatCardProps) {
-  const bgColor = useColorModeValue(`${colorScheme}.100`, `${colorScheme}.700`);
-  const textColor = useColorModeValue(
-    `${colorScheme}.800`,
-    `${colorScheme}.100`,
-  );
-  const iconBg = useColorModeValue(`${colorScheme}.200`, `${colorScheme}.600`);
-  const iconColor = useColorModeValue(
-    `${colorScheme}.600`,
-    `${colorScheme}.200`,
-  );
-
-  const chartData = trendData.map((val, i) => ({
-    name: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"][i],
-    value: val,
-  }));
-
-  return (
-    <Box
-      p={4}
-      bg={bgColor}
-      borderRadius="xl"
-      shadow="md"
-      position="relative"
-      overflow="hidden"
-    >
-      <Box
-        position="absolute"
-        bottom={0}
-        left={0}
-        right={0}
-        height="40%"
-        opacity={0.2}
-      >
-        <ResponsiveContainer width="100%" height="100%">
-          <AreaChart data={chartData}>
-            <Area
-              type="monotone"
-              dataKey="value"
-              stroke={iconColor}
-              fill={iconColor}
-              strokeWidth={2}
-            />
-          </AreaChart>
-        </ResponsiveContainer>
-      </Box>
-
-      <Stat position="relative" zIndex={1} color={textColor}>
-        <Flex justifyContent="space-between" alignItems="flex-start">
-          <Box>
-            <StatLabel fontWeight="medium" fontSize="sm">
-              {label}
-            </StatLabel>
-            <StatNumber fontSize="2xl" fontWeight="bold" mt={1}>
-              {value}
-            </StatNumber>
-            {change && trend !== "flat" && (
-              <Badge
-                colorScheme={trend === "up" ? "green" : "red"}
-                fontSize="xs"
-                mt={1}
-                display="flex"
-                alignItems="center"
-                gap={1}
-              >
-                {trend === "up" ? (
-                  <FiTrendingUp size={12} />
-                ) : (
-                  <FiTrendingDown size={12} />
-                )}
-                {change}
-              </Badge>
-            )}
-          </Box>
-          <Box p={2} bg={iconBg} borderRadius="lg">
-            <Icon as={icon} boxSize={5} color={iconColor} />
-          </Box>
-        </Flex>
-      </Stat>
-    </Box>
-  );
-}
+import { StatCard } from "./components/StatCard";
 
 export default function HomePage() {
   const cardBg = useColorModeValue("white", "gray.800");
   const weeklyOverviewBorderBg = useColorModeValue("gray.200", "gray.600");
-
   const navigate = useNavigate();
   const { data, isLoading, error } = useDashboardAnalytics();
 
@@ -163,17 +49,12 @@ export default function HomePage() {
 
   return (
     <Box p={4} maxW="1200px" mx="auto">
-      <Flex justifyContent="space-between" alignItems="center" mb={6}>
-        <Box>
-          <Heading size="lg">Welcome to your Sari-Sari POS</Heading>
-          <Text color="gray.500" mt={1}>
-            Here&apos;s your summary for today
-          </Text>
-        </Box>
-        <Badge colorScheme="green" px={3} py={1} borderRadius="full">
-          Live Data
-        </Badge>
-      </Flex>
+      <Heading size="lg" mb={1}>
+        Welcome to your Sari-Sari POS
+      </Heading>
+      <Text color="gray.500" mb={6}>
+        Here&apos;s your summary for today
+      </Text>
 
       <SimpleGrid columns={{ base: 1, md: 3 }} spacing={6} mb={8}>
         <StatCard
