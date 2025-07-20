@@ -14,7 +14,7 @@ import {
   TabPanels,
   TabPanel,
 } from "@chakra-ui/react";
-import { useBarcodeScanner } from "@/pages/inventory/hooks/useBarcodeScanner";
+import { useBarcodeScanner } from "@/pages/inventory/modals/BarcodeScanner/hooks/useBarcodeScanner";
 import { ScannerPane } from "./ScannerPane";
 import { ManualPane } from "./ManualPane";
 

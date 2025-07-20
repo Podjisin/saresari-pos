@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { UseToastOptions } from "@chakra-ui/react";
-import { useInventory } from "./useInventory";
+import { useInventory } from "../../../hooks/useInventory";
 
 export interface ProductInfo {
   id: number;

@@ -48,7 +48,7 @@ import { Pagination } from "@/components/Pagination";
 import { useDebounce } from "@/hooks/useDebounce";
 import { format } from "date-fns";
 import { InventoryBatch } from "@/pages/inventory/types/index";
-import type { Handlers } from "@/pages/inventory/hooks/useAddInventoryForm";
+import type { Handlers } from "@/pages/inventory/modals/Additem/hooks/useAddInventoryForm";
 
 interface InventoryListProps {
   handlers: Handlers;
