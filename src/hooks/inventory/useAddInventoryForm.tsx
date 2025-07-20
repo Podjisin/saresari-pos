@@ -106,16 +106,18 @@ export function useAddInventoryForm({
 
   useEffect(() => {
     if (!barcode) return;
+    let mounted = true;
     (async () => {
       try {
         const units = await query<{ id: number; name: string }>(
           "SELECT id, name FROM inventory_unit",
         );
+        if (!mounted) return;
         const categories = await query<{ id: number; name: string }>(
           "SELECT id, name FROM inventory_category",
         );
         setFormState((s) => ({ ...s, units, categories }));
-
+        if (!mounted) return;
         const existing = await query<ProductInfo>(
           `
           SELECT p.id, p.name, p.selling_price, p.unit_id, p.category_id,
@@ -127,6 +129,7 @@ export function useAddInventoryForm({
           `,
           { params: [barcode] },
         );
+        if (!mounted) return;
         if (existing.length) {
           const product = existing[0];
           setFormState((s) => ({
@@ -141,6 +144,7 @@ export function useAddInventoryForm({
           }));
         }
       } catch (err) {
+        if (!mounted) return;
         const error = err instanceof Error ? err.message : "Unknown error";
         console.error("Failed to load inventory data:", error);
         toast({
@@ -151,6 +155,10 @@ export function useAddInventoryForm({
         });
       }
     })();
+
+    return () => {
+      mounted = false;
+    };
   }, [barcode, query, toast]);
 
   const submit = async () => {
@@ -173,7 +181,7 @@ export function useAddInventoryForm({
 
       const productResult = await upsertProduct({
         name,
-        barcode: barcode || null,
+        barcode: formState.barcode || null,
         selling_price: sellingPrice,
         unit_id: unitId || undefined,
         category_id: categoryId || undefined,
