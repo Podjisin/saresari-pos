@@ -8,12 +8,8 @@ updates:
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
-      interval: "daily"  # or cron-based
+      interval: "daily" # or cron-based
     open-pull-requests-limit: 5
-    cooldown:
-      semver-patch-days: 7
-      semver-minor-days: 14
-      semver-major-days: 30
     ignore:
       - dependency-name: "@tauri-apps/api"
         versions: ["2.x"]
