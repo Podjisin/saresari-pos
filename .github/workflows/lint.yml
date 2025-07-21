@@ -21,7 +21,7 @@ jobs:
           cache: "npm"
 
       - name: Cache ESLint results
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: .eslintcache
           key: ${{ runner.os }}-eslint-${{ hashFiles('**/package-lock.json','**/.eslintrc.js','**/.eslintignore') }}
