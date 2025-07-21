@@ -1,33 +1,35 @@
-name: Lint
-
+name: Lint Code
 on:
-  push: # runs on any push
-  pull_request: # runs on any pull request
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
 
 permissions:
   contents: read
-  packages: read
-  statuses: write
   checks: write
 
 jobs:
   lint:
-    name: Lint
     runs-on: ubuntu-latest
-
-    permissions:
-      contents: read
-      packages: read
-      statuses: write
-      checks: write
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
+      - uses: actions/checkout@v4
 
-      - name: Super-linter
-        uses: super-linter/super-linter@v8.0.0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Cache ESLint results
+        uses: actions/cache@v3
+        with:
+          path: .eslintcache
+          key: ${{ runner.os }}-eslint-${{ hashFiles('**/package-lock.json','**/.eslintrc.js','**/.eslintignore') }}
+          restore-keys: |
+            ${{ runner.os }}-eslint-
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run ESLint
+        run: npm run lint -- --cache --cache-strategy content --cache-location .eslintcache
