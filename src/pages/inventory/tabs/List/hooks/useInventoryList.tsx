@@ -5,6 +5,10 @@ import { useDebounce } from "@/hooks/useDebounce";
 import { InventoryBatch } from "@/types/Inventory";
 import { buildWhereClause, getInventoryQuery, getCountQuery } from "../utils";
 
+/**
+ * Custom hook for managing the state and operations of the inventory list.
+ * @returns Custom hook for managing inventory list state and operations.
+ */
 export function useInventoryList() {
   const toast = useToast();
   const { query, error, isLoading, isInitializing, resetError } =
@@ -30,6 +34,10 @@ export function useInventoryList() {
 
   const totalPages = Math.ceil(pagination.totalItems / pagination.pageSize);
 
+  /**
+   * Fetches inventory batches based on current filters and pagination.
+   * @returns {Promise<void>} A promise that resolves when the batches are fetched.
+   */
   const fetchBatches = async () => {
     try {
       setLocalLoading(true);
@@ -59,6 +67,10 @@ export function useInventoryList() {
     }
   };
 
+  /**
+   * Fetches the total count of inventory items based on current filters.
+   * @return {Promise<void>} A promise that resolves when the total count is fetched.
+   */
   const fetchTotalCount = async () => {
     try {
       const { clause, params } = buildWhereClause(
@@ -83,6 +95,10 @@ export function useInventoryList() {
     }
   };
 
+  /**
+   * Fetches the list of inventory categories from the database.
+   * @returns {Promise<void>} A promise that resolves when the categories are fetched.
+   */
   const fetchCategories = async () => {
     try {
       const result = await query<{ name: string }>(
