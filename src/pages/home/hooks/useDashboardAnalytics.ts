@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { useDatabase } from "./useDatabase";
+import { useDatabase } from "@/hooks/useDatabase";
 import {
   getTotalSales,
   getTransactionCount,
@@ -7,7 +7,7 @@ import {
   getDailySales,
   getLastWeekSales,
   getLastWeekTransactionCount,
-} from "../services/statistics";
+} from "@/services/salesReportService";
 import { determineTrendDirection } from "@/utils/trend";
 import { format, subDays } from "date-fns";
 

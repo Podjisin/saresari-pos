@@ -31,12 +31,9 @@ export function useDatabase(): DatabaseHook {
 
   const configureDatabase = useCallback(async (db: Database) => {
     try {
-      // Optimize for concurrent access
       await db.execute("PRAGMA journal_mode = WAL;");
       await db.execute("PRAGMA synchronous = NORMAL;");
       await db.execute(`PRAGMA busy_timeout = ${5 * 1000};`);
-      // 5 seconds busy timeout, adjust as needed.
-      // This allows the database to wait for a short period if it's busy before throwing an error.
     } catch (error) {
       console.warn("Failed to configure database pragmas:", error);
     }

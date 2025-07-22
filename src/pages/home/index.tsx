@@ -18,7 +18,7 @@ import {
   LabelList,
   XAxis,
 } from "recharts";
-import { useDashboardAnalytics } from "@/hooks/useDashboardAnalytics";
+import { useDashboardAnalytics } from "@/pages/home/hooks/useDashboardAnalytics";
 import { StatCard, TopItemsCard } from "./components";
 
 /**

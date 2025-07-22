@@ -1,58 +1,13 @@
 import { useState, useEffect, useCallback } from "react";
 import { useDatabase } from "@/hooks/useDatabase";
 import { useToast } from "@chakra-ui/react";
-
-// Type definitions
-export type InventoryChangeReason =
-  | "initial_stock"
-  | "restock"
-  | "sale"
-  | "adjustment"
-  | "damaged"
-  | "expired"
-  | "transfer"
-  | "delete"
-  | "edit"
-  | "merge"
-  | "split"
-  | "other";
-
-export interface InventoryHistoryRecord {
-  id: number;
-  batch_id: number;
-  change: number;
-  reason: InventoryChangeReason;
-  note: string | null;
-  created_at: string;
-  product_name?: string;
-  batch_number?: string | null;
-}
-
-export interface HistoryQueryParams {
-  batchId?: number;
-  productId?: number;
-  reason?: InventoryChangeReason;
-  dateFrom?: string;
-  dateTo?: string;
-  limit?: number;
-  offset?: number;
-  orderBy?: "created_at" | "change";
-  orderDirection?: "ASC" | "DESC";
-}
-
-export interface HistoryStats {
-  total_added: number;
-  total_removed: number;
-  most_common_reason: InventoryChangeReason;
-  recent_activity: InventoryHistoryRecord[];
-}
-
-export interface PaginatedHistoryResult {
-  records: InventoryHistoryRecord[];
-  total: number;
-  limit: number;
-  offset: number;
-}
+import {
+  InventoryChangeReason,
+  InventoryHistoryRecord,
+  HistoryQueryParams,
+  PaginatedHistoryResult,
+  HistoryStats,
+} from "@/types/Inventory";
 
 export function useInventoryHistory() {
   const [isLoading, setIsLoading] = useState(false);

@@ -32,18 +32,19 @@ import {
 } from "@chakra-ui/react";
 import { FiRefreshCw, FiSearch, FiFilter, FiCalendar } from "react-icons/fi";
 import { useState, useEffect } from "react";
-import {
-  useInventoryHistory,
+import { useInventoryHistory } from "@/pages/inventory/hooks";
+import type {
   InventoryHistoryRecord,
   HistoryQueryParams,
   InventoryChangeReason,
   HistoryStats,
-} from "@/pages/inventory/hooks/useInventoryHistory";
-import { Pagination } from "@/components/Pagination/Pagination";
+} from "@/types/Inventory";
+
+import { Pagination } from "@/components";
 import { useDebounce } from "@/hooks/useDebounce";
 import { format } from "date-fns";
 
-export default function InventoryHistory() {
+export function InventoryHistory() {
   const [historyRecords, setHistoryRecords] = useState<
     InventoryHistoryRecord[]
   >([]);

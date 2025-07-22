@@ -1,6 +1,5 @@
 import { Tabs, TabList, Tab, TabPanels, TabPanel } from "@chakra-ui/react";
-import InventoryListTab from "./tabs/List/InventoryListTab";
-import InventoryHistory from "./tabs/History";
+import { InventoryList, InventoryHistory } from "./tabs";
 
 /**
  * Displays a tabbed interface for viewing the inventory list and inventory history.
@@ -17,7 +16,7 @@ export default function InventoryPage() {
 
       <TabPanels>
         <TabPanel px={0}>
-          <InventoryListTab />
+          <InventoryList />
         </TabPanel>
         <TabPanel px={0}>
           <InventoryHistory />

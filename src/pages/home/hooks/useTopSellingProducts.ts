@@ -1,6 +1,9 @@
 import { useState, useEffect } from "react";
 import { useDatabase } from "@/hooks/useDatabase";
-import { getTopSellingProducts, TopProduct } from "../services/statistics";
+import {
+  getTopSellingProducts,
+  TopProduct,
+} from "@/services/salesReportService";
 
 export const useTopSellingProducts = (): {
   data: TopProduct[] | null;

@@ -8,7 +8,7 @@ import {
   Badge,
   useColorModeValue,
 } from "@chakra-ui/react";
-import { useTopSellingProducts } from "@/hooks/useTopSellingProducts";
+import { useTopSellingProducts } from "@/pages/home/hooks/useTopSellingProducts";
 
 /**
  * Displays a card listing the top selling products with their sales counts.

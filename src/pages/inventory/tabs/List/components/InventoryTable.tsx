@@ -16,7 +16,7 @@ import {
   HStack,
 } from "@chakra-ui/react";
 import { FiEdit2 } from "react-icons/fi";
-import { InventoryBatch } from "@/pages/inventory/types/index";
+import { InventoryBatch } from "@/types/Inventory";
 import { format } from "date-fns";
 import { getExpirationStatus } from "@/utils/expirationStatus";
 

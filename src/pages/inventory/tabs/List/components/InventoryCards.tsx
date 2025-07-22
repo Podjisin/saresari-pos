@@ -14,7 +14,7 @@ import {
 } from "@chakra-ui/react";
 import { FiEdit2 } from "react-icons/fi";
 import { format } from "date-fns";
-import { InventoryBatch } from "@/pages/inventory/types";
+import { InventoryBatch } from "@/types/Inventory";
 
 type InventoryCardsProps = {
   batches: InventoryBatch[];
