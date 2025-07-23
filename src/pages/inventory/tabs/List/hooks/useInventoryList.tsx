@@ -155,6 +155,7 @@ export function useInventoryList() {
     expiryFilter,
     pagination.currentPage,
     pagination.pageSize,
+    hasFetchedInitial,
   ]);
 
   return {

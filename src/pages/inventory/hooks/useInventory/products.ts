@@ -108,8 +108,8 @@ export function useInventoryProducts({
             [
               product.name,
               product.selling_price,
-              product.unit_id || null,
-              product.category_id || null,
+              product.unit_id ?? null,
+              product.category_id ?? null,
               existing.id,
             ],
           );
@@ -137,8 +137,8 @@ export function useInventoryProducts({
             product.name,
             product.barcode,
             product.selling_price,
-            product.unit_id || null,
-            product.category_id || null,
+            product.unit_id ?? null,
+            product.category_id ?? null,
           ],
         );
 
@@ -151,7 +151,7 @@ export function useInventoryProducts({
         setIsLoading(false);
       }
     },
-    [db, recordProductChange],
+    [db, recordProductChange, setError, setIsLoading],
   );
 
   const upsertProductChange = useCallback(

@@ -86,8 +86,12 @@ export function useInventoryUtils({ db, setError }: UtilsDeps) {
           [productId, field, String(oldValue), String(newValue), note ?? null],
         );
       } catch (err) {
-        // Log but don’t throw to avoid blocking main flow
-        console.warn("Failed to record product change:", err);
+        const message =
+          err instanceof Error
+            ? err.message
+            : "Failed to record product change";
+        console.warn(message);
+        throw err;
       }
     },
     [db],
