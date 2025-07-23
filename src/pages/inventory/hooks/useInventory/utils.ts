@@ -81,7 +81,7 @@ export function useInventoryUtils({ db, setError }: UtilsDeps) {
 
         await db.execute(
           `INSERT INTO product_history (
-            product_id, field, old_value, new_value, note, created_at
+            product_id, field, old_value, new_value, note, changed_at
           ) VALUES (?, ?, ?, ?, ?, datetime('now'))`,
           [productId, field, String(oldValue), String(newValue), note ?? null],
         );
