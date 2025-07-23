@@ -16,7 +16,7 @@ import {
   HStack,
 } from "@chakra-ui/react";
 import { FiEdit2 } from "react-icons/fi";
-import { InventoryBatch } from "@/pages/inventory/types/index";
+import { InventoryBatch } from "@/types/Inventory";
 import { format } from "date-fns";
 import { getExpirationStatus } from "@/utils/expirationStatus";
 
@@ -25,6 +25,14 @@ type InventoryTableProps = {
   onEditBatch: (batch: InventoryBatch) => void;
 };
 
+/**
+ * Renders a responsive table displaying inventory batches with product details, stock, pricing, and expiration status.
+ *
+ * Each row presents product name, barcode, batch number, expiration date with a status badge, stock quantity, unit, category, cost, selling price, and an edit action. Expiration status is visually indicated as expired, expiring soon, or valid. The edit button invokes the provided callback with the selected batch.
+ *
+ * @param batches - The inventory batches to display in the table
+ * @param onEditBatch - Function called when the edit action is triggered for a batch
+ */
 export function InventoryTable({ batches, onEditBatch }: InventoryTableProps) {
   const tableBg = useColorModeValue("white", "gray.800");
 

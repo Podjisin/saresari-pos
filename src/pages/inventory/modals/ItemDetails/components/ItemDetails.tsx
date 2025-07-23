@@ -15,7 +15,7 @@ import { InventoryHeader } from "./InventoryHeader";
 import { InventoryDisplay } from "./InventoryDisplay";
 import { InventoryEditForm } from "./InventoryEditForm";
 import { DeleteConfirmationDialog } from "./DeleteConfirmationDialog";
-import { InventoryBatch } from "@/pages/inventory/types/InventoryBatch";
+import { InventoryBatch } from "@/types/Inventory";
 
 export interface InventoryDetailsModalProps {
   isOpen: boolean;

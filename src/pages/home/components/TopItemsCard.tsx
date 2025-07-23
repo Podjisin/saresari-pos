@@ -8,8 +8,13 @@ import {
   Badge,
   useColorModeValue,
 } from "@chakra-ui/react";
-import { useTopSellingProducts } from "@/hooks/useTopSellingProducts";
+import { useTopSellingProducts } from "@/pages/home/hooks/useTopSellingProducts";
 
+/**
+ * Renders a card displaying the top selling products and their sales counts.
+ *
+ * Fetches product data using a custom hook and conditionally displays a loading spinner, error message, placeholder, or a styled list of products with their total units sold. The card's appearance adapts to the current color mode.
+ */
 export function TopItemsCard() {
   const { data, isLoading, error } = useTopSellingProducts();
   const cardBg = useColorModeValue("white", "gray.800");

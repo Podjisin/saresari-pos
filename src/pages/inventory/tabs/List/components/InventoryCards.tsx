@@ -14,13 +14,22 @@ import {
 } from "@chakra-ui/react";
 import { FiEdit2 } from "react-icons/fi";
 import { format } from "date-fns";
-import { InventoryBatch } from "@/pages/inventory/types";
+import { InventoryBatch } from "@/types/Inventory";
 
 type InventoryCardsProps = {
   batches: InventoryBatch[];
   onEditBatch: (batch: InventoryBatch) => void;
 };
 
+/**
+ * Renders a list of inventory batch cards displaying product details, stock, pricing, and expiration status.
+ *
+ * Each card shows information for an inventory batch, including product name, barcode, batch number, expiration date with status badge, stock quantity and unit, category, cost price, selling price, and calculated profit. The expiration status is visually indicated as "Expired," "Expiring Soon," or "Valid" based on the batch's expiration date. An edit button on each card invokes the provided callback with the batch data.
+ *
+ * @param batches - The inventory batches to display
+ * @param onEditBatch - Function called when the edit button is clicked for a batch
+ * @returns A stack of styled inventory batch cards
+ */
 export function InventoryCards({ batches, onEditBatch }: InventoryCardsProps) {
   const tableBg = useColorModeValue("white", "gray.800");
 

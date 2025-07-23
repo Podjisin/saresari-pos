@@ -9,7 +9,7 @@ import {
   Text,
   Box,
 } from "@chakra-ui/react";
-import { DatePicker } from "@/components/DatePicker";
+import { DatePicker } from "@/components";
 import type {
   FormState,
   Handlers,

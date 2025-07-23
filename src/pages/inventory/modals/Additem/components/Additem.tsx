@@ -20,6 +20,11 @@ export interface AddInventoryItemModalProps {
   onItemAdded: () => void;
 }
 
+/**
+ * Renders a modal dialog for adding a new inventory item or batch, supporting both new products and additional batches for existing products.
+ *
+ * Manages form state, conditional UI for existing products, and handles submission. Invokes callbacks when the modal is closed or an item is successfully added.
+ */
 export function AddInventoryItemModal({
   isOpen,
   onClose,
