@@ -44,6 +44,11 @@ import { Pagination } from "@/components";
 import { useDebounce } from "@/hooks/useDebounce";
 import { format } from "date-fns";
 
+/**
+ * Displays and manages inventory history records with filtering, pagination, and summary statistics.
+ *
+ * Provides an interface for searching, filtering by reason and date range, and paginating inventory history records. Also displays summary statistics such as total items added, removed, and the most common change reason. Handles loading, error, and empty states, and adapts the layout for desktop and mobile views.
+ */
 export function InventoryHistory() {
   const [historyRecords, setHistoryRecords] = useState<
     InventoryHistoryRecord[]

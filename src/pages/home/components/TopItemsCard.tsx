@@ -11,9 +11,9 @@ import {
 import { useTopSellingProducts } from "@/pages/home/hooks/useTopSellingProducts";
 
 /**
- * Displays a card listing the top selling products with their sales counts.
+ * Renders a card displaying the top selling products and their sales counts.
  *
- * Fetches product data using a custom hook and adapts its appearance based on the current color mode. Shows a loading spinner while fetching, an error message if loading fails, a placeholder if no products are found, or a styled list of products with their total units sold.
+ * Fetches product data using a custom hook and conditionally displays a loading spinner, error message, placeholder, or a styled list of products with their total units sold. The card's appearance adapts to the current color mode.
  */
 export function TopItemsCard() {
   const { data, isLoading, error } = useTopSellingProducts();

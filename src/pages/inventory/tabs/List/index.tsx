@@ -21,11 +21,11 @@ import { InventoryBatch } from "@/types/Inventory";
 import { useInventoryList } from "./hooks/useInventoryList";
 
 /**
- * Displays and manages a paginated, filterable inventory list with support for adding, editing, and viewing inventory batches.
+ * Renders a paginated and filterable inventory list with options to add, edit, and view inventory batches.
  *
- * Integrates filtering by search term, category, and expiration status, and provides pagination controls. Includes modals for barcode scanning, adding new inventory items, and viewing or editing batch details. Handles asynchronous data fetching and error notifications.
+ * Provides filtering by search term, category, and expiration status, along with pagination controls. Integrates modals for barcode scanning, adding new inventory items, and viewing or editing batch details. Handles asynchronous data loading, initialization, and error notifications.
  *
- * @returns The rendered inventory list tab component.
+ * @returns The inventory list tab component.
  */
 export function InventoryList() {
   const {

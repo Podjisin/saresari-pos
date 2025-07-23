@@ -21,6 +21,13 @@ let connectionPromise: Promise<Database> | null = null;
 const MAX_RETRIES = 3;
 const RETRY_DELAY_MS = 1000;
 
+/**
+ * React hook that manages a singleton SQLite database connection with automatic initialization, configuration, health checks, error handling, and reconnection logic.
+ *
+ * Ensures a single shared database instance across the app, handles connection retries with exponential backoff, and exposes connection status and control functions.
+ *
+ * @returns An object containing the database instance, connection status, error state, and utility functions for error reset, reconnection, and connection health checks.
+ */
 export function useDatabase(): DatabaseHook {
   const [isInitializing, setIsInitializing] = useState(!globalDbInstance);
   const [error, setError] = useState<string | null>(null);

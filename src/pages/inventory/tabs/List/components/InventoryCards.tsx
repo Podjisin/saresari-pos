@@ -22,12 +22,12 @@ type InventoryCardsProps = {
 };
 
 /**
- * Displays a list of inventory batch cards with product, stock, pricing, and expiration details.
+ * Renders a list of inventory batch cards displaying product details, stock, pricing, and expiration status.
  *
- * Each card presents information about an inventory batch, including product name, barcode, batch number, expiration status, stock quantity, category, cost price, selling price, and calculated profit. The expiration status is visually indicated as "Expired," "Expiring Soon," or "Valid" based on the batch's expiration date. An edit button on each card triggers the provided callback with the corresponding batch data.
+ * Each card shows information for an inventory batch, including product name, barcode, batch number, expiration date with status badge, stock quantity and unit, category, cost price, selling price, and calculated profit. The expiration status is visually indicated as "Expired," "Expiring Soon," or "Valid" based on the batch's expiration date. An edit button on each card invokes the provided callback with the batch data.
  *
- * @param batches - Array of inventory batch objects to display
- * @param onEditBatch - Callback invoked when the edit button is clicked for a batch
+ * @param batches - The inventory batches to display
+ * @param onEditBatch - Function called when the edit button is clicked for a batch
  * @returns A stack of styled inventory batch cards
  */
 export function InventoryCards({ batches, onEditBatch }: InventoryCardsProps) {
