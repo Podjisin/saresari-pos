@@ -6,8 +6,11 @@ import { InventoryBatch } from "@/types/Inventory";
 import { buildWhereClause, getInventoryQuery, getCountQuery } from "../utils";
 
 /**
- * Custom hook for managing the state and operations of the inventory list.
- * @returns Custom hook for managing inventory list state and operations.
+ * React hook that manages inventory list state, filters, pagination, and data-fetching operations.
+ *
+ * Provides inventory batches, category options, filter and pagination state, loading indicators, and utility functions for refreshing and updating the inventory list.
+ *
+ * @returns An object containing inventory data, filter and pagination state, loading flags, and methods for fetching and updating inventory list information.
  */
 export function useInventoryList() {
   const toast = useToast();

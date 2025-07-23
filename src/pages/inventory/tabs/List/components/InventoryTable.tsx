@@ -26,12 +26,12 @@ type InventoryTableProps = {
 };
 
 /**
- * Displays a responsive table of inventory batches with product, batch, stock, pricing, and expiration details.
+ * Renders a responsive table displaying inventory batches with product details, stock, pricing, and expiration status.
  *
- * Each row shows product information, batch number, expiration status with color-coded badges, stock quantity, unit, category, cost and selling prices, and an edit action. Expiration status is visually indicated as expired, expiring soon, or valid. The edit button triggers the provided callback with the selected batch.
+ * Each row presents product name, barcode, batch number, expiration date with a status badge, stock quantity, unit, category, cost, selling price, and an edit action. Expiration status is visually indicated as expired, expiring soon, or valid. The edit button invokes the provided callback with the selected batch.
  *
- * @param batches - Array of inventory batch objects to display
- * @param onEditBatch - Callback invoked when the edit action is triggered for a batch
+ * @param batches - The inventory batches to display in the table
+ * @param onEditBatch - Function called when the edit action is triggered for a batch
  */
 export function InventoryTable({ batches, onEditBatch }: InventoryTableProps) {
   const tableBg = useColorModeValue("white", "gray.800");

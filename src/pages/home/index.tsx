@@ -22,9 +22,9 @@ import { useDashboardAnalytics } from "@/pages/home/hooks/useDashboardAnalytics"
 import { StatCard, TopItemsCard } from "./components";
 
 /**
- * Renders the main dashboard page for the Sari-Sari POS system, displaying key business statistics, weekly sales trends, and top-selling items.
+ * Displays the main dashboard for the Sari-Sari POS system, presenting business statistics, weekly sales trends, and top-selling items.
  *
- * Shows loading and error states while fetching analytics data, and provides navigation buttons for common actions.
+ * Handles loading and error states during analytics data retrieval and provides navigation buttons for common actions.
  *
  * @returns The dashboard interface as a React element.
  */

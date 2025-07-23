@@ -15,6 +15,15 @@ type ProductsDeps = {
   ) => Promise<void>;
 };
 
+/**
+ * Provides functions to insert or update products and record product change events in the inventory database.
+ *
+ * Returns two asynchronous functions:
+ * - `upsertProduct`: Inserts a new product or updates an existing one based on barcode, recording field changes and updating product history as needed.
+ * - `upsertProductChange`: Records a product change event with a specified reason and optional note.
+ *
+ * @returns An object containing `upsertProduct` and `upsertProductChange` functions for managing inventory products and their change history.
+ */
 export function useInventoryProducts({
   db,
   setError,

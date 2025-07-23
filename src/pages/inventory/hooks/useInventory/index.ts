@@ -8,7 +8,9 @@ import { useInventoryUtils } from "./utils";
 import { QueryOptions } from "@/types/Inventory";
 
 /**
- * Main useInventory hook - provides inventory/product management and database utilities.
+ * React hook that provides inventory and product management operations with integrated database access, error handling, and UI feedback.
+ *
+ * Returns an object containing generic query and mutation functions, inventory batch operations, sales and product utilities, loading and error states, and a method to reset errors.
  */
 export function useInventory() {
   const [isLoading, setIsLoading] = useState(false);

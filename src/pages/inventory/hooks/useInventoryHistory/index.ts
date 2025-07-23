@@ -9,6 +9,13 @@ import {
   HistoryStats,
 } from "@/types/Inventory";
 
+/**
+ * React hook for managing inventory history, including data retrieval, statistics, record creation and deletion, and change reason enumeration.
+ *
+ * Provides functions to fetch inventory history with filtering and pagination, retrieve aggregated statistics, add and delete history records, and list all possible inventory change reasons. Exposes loading and error states, as well as a method to reset errors.
+ *
+ * @returns An object containing inventory history operations, loading and error states, and utility functions.
+ */
 export function useInventoryHistory() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);

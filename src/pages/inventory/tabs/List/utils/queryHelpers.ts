@@ -4,7 +4,12 @@ export type WhereClause = {
 };
 
 /**
- * Constructs a SQL WHERE clause and parameter array based on filters.
+ * Builds a SQL WHERE clause and parameter array for filtering inventory batches by search term, category, and expiration status.
+ *
+ * @param debouncedSearchTerm - Search term applied to product name, barcode, or batch number
+ * @param categoryFilter - Category name to filter by, or "all" for no category filter
+ * @param expiryFilter - Expiry status filter: "expired", "expiring", or "valid"
+ * @returns An object containing the SQL WHERE clause string and its associated parameters
  */
 export function buildWhereClause(
   debouncedSearchTerm: string,
@@ -40,7 +45,10 @@ export function buildWhereClause(
 }
 
 /**
- * SQL SELECT statement for fetching inventory batches.
+ * Returns a SQL SELECT query string to retrieve inventory batch details joined with product, unit, and category information, applying the specified WHERE clause and supporting pagination.
+ *
+ * @param clause - The SQL WHERE clause to filter inventory batches
+ * @returns The complete SQL SELECT query string with joins and ordering
  */
 export function getInventoryQuery(clause: string): string {
   return `
@@ -68,7 +76,12 @@ export function getInventoryQuery(clause: string): string {
 }
 
 /**
- * SQL COUNT statement to get total inventory items.
+ * Returns a SQL COUNT query string to count inventory batches matching the provided WHERE clause.
+ *
+ * The query joins inventory batches with products and categories, and applies the given filter conditions.
+ *
+ * @param clause - The SQL WHERE clause to filter inventory batches
+ * @returns A SQL query string that counts the number of matching inventory batches
  */
 export function getCountQuery(clause: string): string {
   return `

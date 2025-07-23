@@ -14,6 +14,11 @@ type SalesDeps = {
   ) => Promise<void>;
 };
 
+/**
+ * Provides inventory sales management by exposing a function to create sales records and update inventory in a single transaction.
+ *
+ * Returns an object containing the `createSale` function, which processes a sale by recording it in the database, updating inventory quantities, and logging inventory changes. Ensures atomicity and error handling throughout the operation.
+ */
 export function useInventorySales({
   db,
   setError,

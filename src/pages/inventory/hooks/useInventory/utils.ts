@@ -23,7 +23,15 @@ export type RecordProductChange = {
 };
 
 /**
- * Hook providing utility functions to record inventory and product history changes.
+ * Provides utility functions for recording inventory and product changes in the database.
+ *
+ * Returns two asynchronous functions:
+ * - `recordInventoryChange`: Records a change in the inventory history table and sets an error message if the operation fails.
+ * - `recordProductChange`: Records a change in the product history table and logs a warning if the operation fails.
+ *
+ * Both functions require the database to be initialized.
+ *
+ * @returns An object containing `recordInventoryChange` and `recordProductChange` functions.
  */
 export function useInventoryUtils({ db, setError }: UtilsDeps) {
   /**

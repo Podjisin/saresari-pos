@@ -18,6 +18,13 @@ type BatchesDeps = {
   ) => Promise<void>;
 };
 
+/**
+ * Provides inventory batch management functions for adding, updating, deleting, editing, and transferring inventory batches using a database.
+ *
+ * Returns an object with asynchronous methods to perform inventory batch operations, handling loading and error states, and recording inventory changes for each operation.
+ *
+ * @returns An object containing functions: `addInventoryBatch`, `updateInventoryBatchQuantity`, `deleteInventoryBatch`, `editInventoryBatch`, and `transferInventory`.
+ */
 export function useInventoryBatches({
   db,
   setError,
